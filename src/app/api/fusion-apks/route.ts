@@ -3,7 +3,7 @@ import { ZodError } from "zod";
 
 import { prisma } from "@/lib/client";
 import { Prisma } from "@/generated/prisma/client";
-import { createFusionApkSchema } from "@/schema/fusion-apk.schema";
+import { supabase } from "@/lib/supabase";
 
 export const GET = async () => {
   try {
@@ -20,14 +20,33 @@ export const GET = async () => {
 
 export const POST = async (request: Request) => {
   try {
-    const data = await request.json();
-    const body = await createFusionApkSchema.parseAsync(data);
+    const formData = await request.formData();
+    const apk_name = formData.get("apk_name");
+    const version = formData.get("version");
+    const file = formData.get("file");
 
+    if (!apk_name || !version || !file || !(file instanceof File)) {
+      return NextResponse.json(
+        { error: "Missing required fields or file" },
+        { status: 400 }
+      );
+    }
+
+    const filePath = `fusion-apk/${Date.now()}-${file.name}`;
+    const { error: uploadError } = await supabase.storage
+      .from("apks")
+      .upload(filePath, file);
+    if (uploadError) {
+      console.log("[UPLOAD ERROR]: ", uploadError);
+      return NextResponse.json({ error: uploadError.message }, { status: 500 });
+    }
+
+    // Save metadata to DB
     const fusionApk = await prisma.fusionApk.create({
       data: {
-        apk_name: body.apk_name,
-        version: body.version,
-        file_path: body.file_path,
+        apk_name: String(apk_name),
+        version: String(version),
+        file_path: filePath,
       },
     });
 
