@@ -1,4 +1,4 @@
-model FusionApk {
+model TrueTraceApk {
   id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   apk_name   String   @unique
   version    String   @unique
@@ -6,6 +6,6 @@ model FusionApk {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  @@map("fusion_apks")
+  @@map("true_trace_apks")
   @@schema("public")
 }
