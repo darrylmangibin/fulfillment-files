@@ -33,13 +33,15 @@ export const POST = async (request: Request) => {
     }
 
     const filePath = `fusion-apk/${Date.now()}-${file.name}`;
-    const { error: uploadError } = await supabase.storage
+    const { error: uploadError, data: uploadData } = await supabase.storage
       .from("apks")
       .upload(filePath, file);
     if (uploadError) {
       console.log("[UPLOAD ERROR]: ", uploadError);
       return NextResponse.json({ error: uploadError.message }, { status: 500 });
     }
+
+    console.log("[UPLOAD DATA]: ", uploadData);
 
     // Save metadata to DB
     const fusionApk = await prisma.fusionApk.create({
