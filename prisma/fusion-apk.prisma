@@ -1,0 +1,10 @@
+model FusionApk {
+  id        Int      @id @default(autoincrement())
+  apkName   String   @unique
+  version   String   @unique
+  path      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("fusion_apks")
+}
