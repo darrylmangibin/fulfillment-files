@@ -3,7 +3,7 @@ import { ZodError } from "zod";
 
 import { prisma } from "@/lib/client";
 import { Prisma } from "@/generated/prisma/client";
-import { supabase } from "@/lib/supabase";
+import { s3StorageService } from "@/modules/s3/services/s3-storage.service";
 
 export const GET = async () => {
   try {
@@ -32,23 +32,21 @@ export const POST = async (request: Request) => {
       );
     }
 
-    const filePath = `true-trace-apk/${Date.now()}-${file.name}`;
-    const { error: uploadError, data: uploadData } = await supabase.storage
-      .from("apks")
-      .upload(filePath, file);
-    if (uploadError) {
-      console.log("[UPLOAD ERROR]: ", uploadError);
-      return NextResponse.json({ error: uploadError.message }, { status: 500 });
-    }
-
-    console.log("[UPLOAD DATA]: ", uploadData);
+    const uploadResult = await s3StorageService.uploadBuffer({
+      file: {
+        buffer: Buffer.from(await file.arrayBuffer()),
+        mimetype: file.type,
+        originalname: file.name,
+        size: file.size,
+      } as unknown as Express.Multer.File,
+    });
 
     // Save metadata to DB
     const fusionApk = await prisma.trueTraceApk.create({
       data: {
         apk_name: String(apk_name),
         version: String(version),
-        file_path: filePath,
+        file_path: uploadResult.publicUrl,
       },
     });
 

@@ -8,6 +8,7 @@ import "./globals.css";
 import { queryClient } from "@/lib/query-client";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { AppLayout } from "@/components/app-layout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,7 +39,7 @@ export default function RootLayout({
             <body
               className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-              {children}
+              <AppLayout>{children}</AppLayout>
             </body>
           </html>
           <ToastContainer position="top-right" autoClose={3000} theme="dark" />
