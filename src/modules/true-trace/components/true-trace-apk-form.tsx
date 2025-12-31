@@ -1,18 +1,16 @@
 "use client";
 
-import { useCreateFusionApk } from "@/fusion/hooks/use-create-fusion-apk";
-
 import { toast, Id as ToastId } from "react-toastify";
 import { useRef } from "react";
 import { ApkForm } from "@/components/apk-form";
+import { useCreateTrueTraceApk } from "@/modules/true-trace/hooks/use-create-true-trace-apk";
 
-export const FusionApkForm = () => {
+export const TrueTraceApkForm = () => {
   // single toast id reference to avoid creating multiple toasts during progress
   const progressToastId = useRef<ToastId | null>(null);
 
-  const { mutate: createFusionApk, isPending } = useCreateFusionApk({
+  const { mutate: createTrueTraceApk, isPending } = useCreateTrueTraceApk({
     onError: (error) => {
-      // hide progress toast if present, then show error
       if (progressToastId.current) {
         toast.update(progressToastId.current, {
           render: `Upload Progress: 100%`,
@@ -41,7 +39,6 @@ export const FusionApkForm = () => {
       toast.success("APK uploaded successfully!");
     },
     onUploadProgress: (progress) => {
-      // ensure single toast instance is used and updated
       const pct = Math.min(100, Math.max(0, Math.round(progress)));
       if (progressToastId.current === null) {
         progressToastId.current = toast.loading(`Upload Progress: ${pct}%`, {
@@ -49,7 +46,6 @@ export const FusionApkForm = () => {
         });
       }
 
-      // update existing toast
       toast.update(progressToastId.current, {
         render:
           pct === 100 ? "Finalizing upload: 100%" : `Upload Progress: ${pct}%`,
@@ -63,9 +59,9 @@ export const FusionApkForm = () => {
 
   return (
     <ApkForm
-      onSubmit={createFusionApk}
+      onSubmit={createTrueTraceApk}
       isLoading={isPending}
-      title="Upload Fusion APK"
+      title="Upload TrueTrace APK"
     />
   );
 };

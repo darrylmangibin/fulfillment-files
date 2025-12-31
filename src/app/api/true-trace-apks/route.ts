@@ -3,6 +3,7 @@ import { ZodError } from "zod";
 
 import { prisma } from "@/lib/client";
 import { Prisma } from "@/generated/prisma/client";
+import { supabase } from "@/lib/supabase";
 
 export const GET = async () => {
   try {
@@ -11,7 +12,7 @@ export const GET = async () => {
     return NextResponse.json(res);
   } catch (error) {
     return NextResponse.json(
-      { error: "Failed to fetch true trace APKs" },
+      { error: "Failed to fetch fusion APKs" },
       { status: 500 }
     );
   }
@@ -19,17 +20,39 @@ export const GET = async () => {
 
 export const POST = async (request: Request) => {
   try {
-    const data = await request.json();
+    const formData = await request.formData();
+    const apk_name = formData.get("apk_name");
+    const version = formData.get("version");
+    const file = formData.get("file");
 
-    const trueTraceApk = await prisma.trueTraceApk.create({
+    if (!apk_name || !version || !file || !(file instanceof File)) {
+      return NextResponse.json(
+        { error: "Missing required fields or file" },
+        { status: 400 }
+      );
+    }
+
+    const filePath = `true-trace-apk/${Date.now()}-${file.name}`;
+    const { error: uploadError, data: uploadData } = await supabase.storage
+      .from("apks")
+      .upload(filePath, file);
+    if (uploadError) {
+      console.log("[UPLOAD ERROR]: ", uploadError);
+      return NextResponse.json({ error: uploadError.message }, { status: 500 });
+    }
+
+    console.log("[UPLOAD DATA]: ", uploadData);
+
+    // Save metadata to DB
+    const fusionApk = await prisma.trueTraceApk.create({
       data: {
-        apk_name: data.apk_name,
-        version: data.version,
-        file_path: data.file_path,
+        apk_name: String(apk_name),
+        version: String(version),
+        file_path: filePath,
       },
     });
 
-    return NextResponse.json(trueTraceApk);
+    return NextResponse.json(fusionApk);
   } catch (error) {
     console.log("[ERROR]: ", error);
 

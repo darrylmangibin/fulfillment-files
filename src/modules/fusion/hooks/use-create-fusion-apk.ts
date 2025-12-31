@@ -1,5 +1,5 @@
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
-import { fusionService } from "@/fusion/services/fusion.service";
+import { fusionService } from "@/modules/fusion/services/fusion.service";
 import { FusionApk } from "@/generated/prisma/client";
 import { AxiosError } from "axios";
 
