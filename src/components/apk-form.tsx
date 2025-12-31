@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Avatar,
   Box,
@@ -39,7 +41,11 @@ export const ApkForm = ({
     });
 
   const handleOnSubmit = handleSubmit((data) => {
-    onSubmit?.(data);
+    onSubmit?.({
+      ...data,
+      file_path:
+        data.file_path instanceof FileList ? data.file_path[0] : data.file_path,
+    });
   });
 
   return (

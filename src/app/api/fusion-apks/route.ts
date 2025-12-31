@@ -24,6 +24,7 @@ export const POST = async (request: Request) => {
     const apk_name = formData.get("apk_name");
     const version = formData.get("version");
     const file = formData.get("file");
+    console.log("[FORM DATA]: ", { apk_name, version, file });
 
     if (!apk_name || !version || !file || !(file instanceof File)) {
       return NextResponse.json(

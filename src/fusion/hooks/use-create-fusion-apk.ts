@@ -7,16 +7,20 @@ export type UseCreateFusionApkVariables = Parameters<
   typeof fusionService.createFusionApk
 >[0];
 
-export const useCreateFusionApk = (
-  options?: UseMutationOptions<
-    FusionApk,
-    AxiosError<unknown>,
-    UseCreateFusionApkVariables
-  >
-) => {
+export type MutationOptions = UseMutationOptions<
+  FusionApk,
+  AxiosError<{
+    error: string;
+  }>,
+  UseCreateFusionApkVariables
+> & {
+  onUploadProgress?: (progress: number) => void;
+};
+
+export const useCreateFusionApk = (options?: MutationOptions) => {
   const mutation = useMutation({
     mutationFn: async (variables: UseCreateFusionApkVariables) =>
-      await fusionService.createFusionApk(variables),
+      await fusionService.createFusionApk(variables, options?.onUploadProgress),
     ...options,
   });
 
