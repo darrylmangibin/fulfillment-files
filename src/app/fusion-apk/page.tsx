@@ -1,9 +1,9 @@
 "use client";
 
 import { CreateApkSchema, createApkSchema } from "@/schema/apk.schema";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@/components/input";
 
 export default function FusionApkPage() {
   const { register, getValues, setValue, handleSubmit, formState, watch } =
@@ -17,12 +17,8 @@ export default function FusionApkPage() {
     });
 
   const onSubmit = handleSubmit(async (data) => {
-    console.log("Form Data: ", data);
+    console.log(data);
   });
-
-  console.log(watch("file_path"));
-
-  console.log(formState.errors);
 
   // const handleSubmit = async (e: React.FormEvent) => {
   //   e.preventDefault();
@@ -99,25 +95,20 @@ export default function FusionApkPage() {
         </div>
 
         <form className="space-y-4" onSubmit={onSubmit}>
-          <label className="block">
-            <span className="text-sm text-gray-300">APK Name</span>
-            <input
-              type="text"
-              placeholder="My App"
-              className="mt-1 block w-full rounded-lg bg-gray-800 border border-gray-700 text-white px-4 py-2 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              {...register("apk_name")}
-            />
-          </label>
+          <Input
+            label="APK Name"
+            placeholder="MyApp.apk"
+            {...register("apk_name")}
+            error={formState.errors.apk_name?.message}
+          />
 
-          <label className="block">
-            <span className="text-sm text-gray-300">Version</span>
-            <input
-              type="text"
-              placeholder="1.0.0"
-              className="mt-1 block w-full rounded-lg bg-gray-800 border border-gray-700 text-white px-4 py-2 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              {...register("version")}
-            />
-          </label>
+          <Input
+            label="Version"
+            type="text"
+            placeholder="1.0.0"
+            {...register("version")}
+            error={formState.errors.version?.message}
+          />
 
           <label className="block">
             <span className="text-sm text-gray-300">APK File</span>
@@ -126,14 +117,14 @@ export default function FusionApkPage() {
                 <div className="w-full rounded-lg border-2 border-dashed border-gray-700 bg-gray-800/50 px-4 py-3 text-gray-300 hover:border-indigo-500 transition">
                   <div className="flex items-center justify-between">
                     <div className="text-sm">
-                      {getValues("file_path")
-                        ? getValues("file_path")?.[0]?.name
+                      {watch("file_path")?.length > 0
+                        ? watch("file_path")?.[0]?.name
                         : "Select an .apk file"}
                     </div>
                     <div className="text-xs text-gray-400">
-                      {getValues("file_path")
+                      {watch("file_path")?.length > 0
                         ? `${(
-                            (getValues("file_path")?.[0]?.size ?? 0) /
+                            (watch("file_path")?.[0]?.size ?? 0) /
                             1024 /
                             1024
                           ).toFixed(2)} MB`
@@ -145,7 +136,6 @@ export default function FusionApkPage() {
                   type="file"
                   accept=".apk"
                   className="hidden"
-                  required
                   {...register("file_path")}
                 />
               </label>
@@ -157,6 +147,11 @@ export default function FusionApkPage() {
                 Clear
               </button>
             </div>
+            {formState.errors.file_path?.message && (
+              <p className="text-xs text-red-500 mt-1">
+                {formState.errors.file_path.message as string}
+              </p>
+            )}
           </label>
 
           <div className="pt-2">
