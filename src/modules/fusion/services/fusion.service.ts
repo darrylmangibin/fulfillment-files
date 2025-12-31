@@ -3,6 +3,12 @@ import { FusionApk } from "@/generated/prisma/client";
 import { FusionApkBody } from "@/modules/fusion/types/fusion-apk.type";
 
 export class FusionService {
+  /**
+   * Create a Fusion APK entry by uploading an APK file along with its metadata.
+   * @param body
+   * @param onUploadProgress
+   * @returns Promise<FusionApk>
+   */
   async createFusionApk(
     body: FusionApkBody,
     onUploadProgress?: (progress: number) => void
@@ -23,6 +29,15 @@ export class FusionService {
         onUploadProgress?.(percentCompleted);
       },
     });
+
+    return data;
+  }
+
+  /**
+   * Retrieve a list of all Fusion APK entries.
+   */
+  async getFusionApks(): Promise<FusionApk[]> {
+    const { data } = await axios.get<FusionApk[]>("/fusion-apks");
 
     return data;
   }

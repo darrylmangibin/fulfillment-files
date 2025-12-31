@@ -52,7 +52,7 @@ const navItems: NavItem[] = [
     icon: <AndroidIcon />,
     subItems: [
       { label: "List APKs", icon: <ListIcon />, path: "/fusion-apk/list" },
-      { label: "Upload APK", icon: <UploadIcon />, path: "/fusion-apk" },
+      { label: "Upload APK", icon: <UploadIcon />, path: "/fusion-apk/create" },
     ],
   },
   {
@@ -60,7 +60,7 @@ const navItems: NavItem[] = [
     icon: <TrackChangesIcon />,
     subItems: [
       { label: "List APKs", icon: <ListIcon />, path: "/true-trace-apk/list" },
-      { label: "Upload APK", icon: <UploadIcon />, path: "/true-trace-apk" },
+      { label: "Upload APK", icon: <UploadIcon />, path: "/true-trace-apk/create" },
     ],
   },
 ];

@@ -3,6 +3,8 @@ model FusionApk {
   apk_name   String   @unique
   version    String   @unique
   file_path  String
+  size       Int?
+  key        String?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 

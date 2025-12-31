@@ -6,7 +6,10 @@
     "dev": "next dev --port 3030",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "prisma:generate": "npx prisma generate --schema=./prisma",
+    "prisma:migrate": "npx prisma migrate dev --schema=./prisma",
+    "prisma:studio": "npx prisma studio --schema=./prisma"
   },
   "dependencies": {
     "@aws-sdk/s3-request-presigner": "^3.958.0",

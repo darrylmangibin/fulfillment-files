@@ -48,6 +48,8 @@ export const POST = async (request: Request) => {
         apk_name: String(apk_name),
         version: String(version),
         file_path: uploadResult.publicUrl,
+        size: file.size,
+        key: uploadResult.key,
       },
     });
 
