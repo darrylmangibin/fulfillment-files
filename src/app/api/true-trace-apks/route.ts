@@ -3,7 +3,6 @@ import { ZodError } from "zod";
 
 import { prisma } from "@/lib/client";
 import { Prisma } from "@/generated/prisma/client";
-import { createTrueTraceSchema } from "@/schema/true-trace-apk.schema";
 
 export const GET = async () => {
   try {
@@ -21,13 +20,12 @@ export const GET = async () => {
 export const POST = async (request: Request) => {
   try {
     const data = await request.json();
-    const body = await createTrueTraceSchema.parseAsync(data);
 
     const trueTraceApk = await prisma.trueTraceApk.create({
       data: {
-        apk_name: body.apk_name,
-        version: body.version,
-        file_path: body.file_path,
+        apk_name: data.apk_name,
+        version: data.version,
+        file_path: data.file_path,
       },
     });
 

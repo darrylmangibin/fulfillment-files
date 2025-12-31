@@ -1,7 +1,0 @@
-import { z } from "zod";
-
-export const createTrueTraceSchema = z.object({
-  apk_name: z.string().min(1),
-  version: z.string().min(1),
-  file_path: z.string().min(1),
-});
