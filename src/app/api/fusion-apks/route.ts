@@ -13,6 +13,7 @@ export const GET = async () => {
 
     return NextResponse.json(res);
   } catch (error) {
+    console.log("[ERROR]: ", error);
     return NextResponse.json(
       { error: "Failed to fetch fusion APKs" },
       { status: 500 }
