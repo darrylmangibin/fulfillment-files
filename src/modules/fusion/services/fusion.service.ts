@@ -1,5 +1,5 @@
 import axios from "@/lib/axios";
-import { FusionApk } from "@/generated/prisma/client";
+import { FusionApk } from "@prisma/client";
 import { FusionApkBody } from "@/modules/fusion/types/fusion-apk.type";
 
 export class FusionService {

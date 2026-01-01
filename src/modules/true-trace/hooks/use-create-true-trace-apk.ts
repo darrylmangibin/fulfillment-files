@@ -1,5 +1,5 @@
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
-import { TrueTraceApk } from "@/generated/prisma/client";
+import { TrueTraceApk } from "@prisma/client";
 import { AxiosError } from "axios";
 import { trueTraceService } from "@/modules/true-trace/services/true-trace.service";
 

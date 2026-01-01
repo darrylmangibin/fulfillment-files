@@ -3,7 +3,7 @@ import { ZodError } from "zod";
 import { Readable } from "stream";
 
 import { prisma } from "@/lib/client";
-import { Prisma } from "@/generated/prisma/client";
+import { Prisma } from "@prisma/client";
 import { supabase } from "@/lib/supabase";
 import { s3StorageService } from "@/modules/s3/services/s3-storage.service";
 

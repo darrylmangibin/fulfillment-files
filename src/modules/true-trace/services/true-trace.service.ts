@@ -1,5 +1,5 @@
 import axios from "@/lib/axios";
-import { TrueTraceApk } from "@/generated/prisma/client";
+import { TrueTraceApk } from "@prisma/client";
 import { TrueTraceApkBody } from "@/modules/true-trace/types/true-trace-apk.type";
 
 export class TrueTraceService {

@@ -1,4 +1,4 @@
-import { FusionApk } from "@/generated/prisma/client";
+import { FusionApk } from "@prisma/client";
 import { FUSION_APKS_QUERY_KEY } from "@/modules/fusion/constants/fusion.constant";
 import { fusionService } from "@/modules/fusion/services/fusion.service";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";

@@ -40,8 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Prisma generated client will be generated during build
-/src/generated/prisma
-
 # google service account keys
 bf.json

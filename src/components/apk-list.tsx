@@ -22,7 +22,7 @@ import {
   Delete as DeleteIcon,
   TrackChanges as TrackChangesIcon,
 } from "@mui/icons-material";
-import { FusionApk, TrueTraceApk } from "@/generated/prisma/client";
+import { FusionApk, TrueTraceApk } from "@prisma/client";
 import { ApkListLoader } from "@/components/apk-list-loader";
 
 export type ApkListProps = {

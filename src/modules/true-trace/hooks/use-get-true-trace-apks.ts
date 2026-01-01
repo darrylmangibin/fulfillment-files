@@ -1,4 +1,4 @@
-import { TrueTraceApk } from "@/generated/prisma/client";
+import { TrueTraceApk } from "@prisma/client";
 import { TRUE_TRACE_APKS_QUERY_KEY } from "@/modules/true-trace/constants/true-trace.constant";
 import { trueTraceService } from "@/modules/true-trace/services/true-trace.service";
 import { useQuery, UseQueryOptions } from "@tanstack/react-query";
