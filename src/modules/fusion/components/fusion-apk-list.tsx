@@ -4,5 +4,12 @@ import { useGetFusionApks } from "@/modules/fusion/hooks/use-get-fusion-apks";
 export const FusionApkList = () => {
   const { data, isLoading } = useGetFusionApks();
 
-  return <ApkList data={data ?? []} isLoading={isLoading} />;
+  return (
+    <ApkList
+      data={data ?? []}
+      isLoading={isLoading}
+      title="Fusion APK List"
+      description="View and manage all Fusion APK files"
+    />
+  );
 };

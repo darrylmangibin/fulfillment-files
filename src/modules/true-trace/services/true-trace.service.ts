@@ -30,6 +30,15 @@ export class TrueTraceService {
 
     return data;
   }
+
+  /**
+   * Retrieve a list of all TrueTrace APK entries.
+   */
+  async getTrueTraceApks(): Promise<TrueTraceApk[]> {
+    const { data } = await axios.get<TrueTraceApk[]>("/true-trace-apks");
+
+    return data;
+  }
 }
 
 export const trueTraceService = new TrueTraceService();
