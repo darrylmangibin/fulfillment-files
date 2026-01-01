@@ -60,7 +60,11 @@ const navItems: NavItem[] = [
     icon: <TrackChangesIcon />,
     subItems: [
       { label: "List APKs", icon: <ListIcon />, path: "/true-trace-apk/list" },
-      { label: "Upload APK", icon: <UploadIcon />, path: "/true-trace-apk/create" },
+      {
+        label: "Upload APK",
+        icon: <UploadIcon />,
+        path: "/true-trace-apk/create",
+      },
     ],
   },
 ];
@@ -168,16 +172,16 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
                         borderRadius: 2,
                         bgcolor:
                           isActive || isAnySubActive
-                            ? "rgba(124,58,237,0.15)"
+                            ? (theme) => `${theme.palette.primary.main}26`
                             : "transparent",
                         color:
                           isActive || isAnySubActive
-                            ? "#7c3aed"
+                            ? "primary.main"
                             : "text.secondary",
                         "&:hover": {
                           bgcolor:
                             isActive || isAnySubActive
-                              ? "rgba(124,58,237,0.25)"
+                              ? (theme) => `${theme.palette.primary.main}40`
                               : "rgba(255,255,255,0.05)",
                         },
                       }}
@@ -189,7 +193,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
                           justifyContent: "center",
                           color:
                             isActive || isAnySubActive
-                              ? "#7c3aed"
+                              ? "primary.main"
                               : "text.secondary",
                         }}
                       >
@@ -224,14 +228,15 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
                                 my: 0.5,
                                 borderRadius: 2,
                                 bgcolor: isSubActive
-                                  ? "rgba(124,58,237,0.15)"
+                                  ? (theme) => `${theme.palette.primary.main}26`
                                   : "transparent",
                                 color: isSubActive
-                                  ? "#7c3aed"
+                                  ? "primary.main"
                                   : "text.secondary",
                                 "&:hover": {
                                   bgcolor: isSubActive
-                                    ? "rgba(124,58,237,0.25)"
+                                    ? (theme) =>
+                                        `${theme.palette.primary.main}40`
                                     : "rgba(255,255,255,0.05)",
                                 },
                               }}
@@ -241,7 +246,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
                                   minWidth: 0,
                                   mr: 2,
                                   color: isSubActive
-                                    ? "#7c3aed"
+                                    ? "primary.main"
                                     : "text.secondary",
                                 }}
                               >

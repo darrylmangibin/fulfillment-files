@@ -28,6 +28,12 @@ export default function RootLayout({
   const darkTheme = createTheme({
     palette: {
       mode: "dark",
+      primary: {
+        main: "#7c3aed",
+        light: "#9f67ff",
+        dark: "#5b21b6",
+        contrastText: "#ffffff",
+      },
     },
   });
 

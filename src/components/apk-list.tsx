@@ -30,6 +30,7 @@ export type ApkListProps = {
   isLoading?: boolean;
   title: string;
   description: string;
+  icon?: React.ReactNode;
 };
 
 export const ApkList = ({
@@ -37,7 +38,10 @@ export const ApkList = ({
   isLoading,
   title,
   description,
+  icon,
 }: ApkListProps) => {
+  const Icon = icon ?? <TrackChangesIcon />;
+
   if (isLoading) {
     return <ApkListLoader />;
   }
@@ -54,7 +58,7 @@ export const ApkList = ({
             boxShadow: "0 8px 24px rgba(12,32,64,0.5)",
           }}
         >
-          <TrackChangesIcon />
+          {Icon}
         </Avatar>
         <Box>
           <Typography variant="h5" sx={{ fontWeight: 700 }}>
@@ -78,20 +82,53 @@ export const ApkList = ({
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ color: "text.secondary", fontWeight: 600, width: 180, height: 60 }}>
+                  <TableCell
+                    sx={{
+                      color: "text.secondary",
+                      fontWeight: 600,
+                      width: 180,
+                      height: 60,
+                    }}
+                  >
                     APK Name
                   </TableCell>
-                  <TableCell sx={{ color: "text.secondary", fontWeight: 600, width: 60, height: 60 }}>
+                  <TableCell
+                    sx={{
+                      color: "text.secondary",
+                      fontWeight: 600,
+                      width: 60,
+                      height: 60,
+                    }}
+                  >
                     Version
                   </TableCell>
-                  <TableCell sx={{ color: "text.secondary", fontWeight: 600, width: 80, height: 60 }}>
+                  <TableCell
+                    sx={{
+                      color: "text.secondary",
+                      fontWeight: 600,
+                      width: 80,
+                      height: 60,
+                    }}
+                  >
                     Size
                   </TableCell>
-                  <TableCell sx={{ color: "text.secondary", fontWeight: 600, width: 100, height: 60 }}>
+                  <TableCell
+                    sx={{
+                      color: "text.secondary",
+                      fontWeight: 600,
+                      width: 100,
+                      height: 60,
+                    }}
+                  >
                     Date
                   </TableCell>
                   <TableCell
-                    sx={{ color: "text.secondary", fontWeight: 600, width: 80, height: 60 }}
+                    sx={{
+                      color: "text.secondary",
+                      fontWeight: 600,
+                      width: 80,
+                      height: 60,
+                    }}
                     align="right"
                   >
                     Actions

@@ -64,7 +64,12 @@ export const ApkListLoader = () => {
                       height: 60,
                     }}
                   >
-                    APK Name
+                    <Skeleton
+                      variant="text"
+                      width={100}
+                      height={24}
+                      sx={{ bgcolor: "rgba(255,255,255,0.05)" }}
+                    />
                   </TableCell>
                   <TableCell
                     sx={{
@@ -74,7 +79,12 @@ export const ApkListLoader = () => {
                       height: 60,
                     }}
                   >
-                    Version
+                    <Skeleton
+                      variant="text"
+                      width={40}
+                      height={24}
+                      sx={{ bgcolor: "rgba(255,255,255,0.05)" }}
+                    />
                   </TableCell>
                   <TableCell
                     sx={{
@@ -84,7 +94,12 @@ export const ApkListLoader = () => {
                       height: 60,
                     }}
                   >
-                    Size
+                    <Skeleton
+                      variant="text"
+                      width={50}
+                      height={24}
+                      sx={{ bgcolor: "rgba(255,255,255,0.05)" }}
+                    />
                   </TableCell>
                   <TableCell
                     sx={{
@@ -94,7 +109,12 @@ export const ApkListLoader = () => {
                       height: 60,
                     }}
                   >
-                    Date
+                    <Skeleton
+                      variant="text"
+                      width={70}
+                      height={24}
+                      sx={{ bgcolor: "rgba(255,255,255,0.05)" }}
+                    />
                   </TableCell>
                   <TableCell
                     sx={{
@@ -105,7 +125,12 @@ export const ApkListLoader = () => {
                     }}
                     align="right"
                   >
-                    Actions
+                    <Skeleton
+                      variant="text"
+                      width={60}
+                      height={24}
+                      sx={{ bgcolor: "rgba(255,255,255,0.05)" }}
+                    />
                   </TableCell>
                 </TableRow>
               </TableHead>
