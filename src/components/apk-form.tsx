@@ -51,48 +51,81 @@ export const ApkForm = ({
   return (
     <Box
       sx={{
-        minHeight: "100vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        p: 6,
-        background:
-          "radial-gradient(1200px 400px at 10% 10%, rgba(11,18,32,0.6), transparent), linear-gradient(180deg,#01040a 0%, #03050a 100%)",
+        p: 3,
         color: "common.white",
       }}
     >
-      <Box sx={{ width: "100%", maxWidth: 920, p: 2 }}>
+      <Box sx={{ width: "100%", maxWidth: 580 }}>
         <Container maxWidth="sm">
           <Card
             sx={{
-              borderRadius: 3,
-              bgcolor: (theme) =>
-                theme.palette.mode === "dark" ? "#02040a" : "background.paper",
+              borderRadius: 4,
+              bgcolor: "#02040a",
               color: "text.primary",
-              boxShadow: "0 12px 40px rgba(2,6,23,0.8)",
+              boxShadow: "0 20px 60px rgba(0,0,0,0.6)",
+              border: "1px solid rgba(124,58,237,0.1)",
+              position: "relative",
+              overflow: "visible",
+              "&::before": {
+                content: '""',
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: "4px",
+                background: (theme) =>
+                  `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
+                borderRadius: "16px 16px 0 0",
+              },
             }}
-            elevation={9}
+            elevation={0}
           >
-            <CardContent sx={{ p: 4 }}>
-              <Box display="flex" alignItems="center" gap={2} mb={2}>
+            <CardContent sx={{ p: { xs: 3, sm: 5 } }}>
+              <Box display="flex" alignItems="center" gap={2.5} mb={4}>
                 <Avatar
                   sx={{
-                    width: 52,
-                    height: 52,
-                    bgcolor: "transparent",
-                    background: "linear-gradient(135deg,#7c3aed,#0891b2)",
-                    boxShadow: "0 8px 24px rgba(12,32,64,0.5)",
+                    width: 56,
+                    height: 56,
+                    bgcolor: (theme) => `${theme.palette.primary.main}15`,
+                    border: (theme) =>
+                      `2px solid ${theme.palette.primary.main}30`,
+                    boxShadow: (theme) =>
+                      `0 8px 32px ${theme.palette.primary.main}40`,
                   }}
                 >
-                  <CloudUploadIcon sx={{ fontSize: 26, color: "#fff" }} />
+                  <CloudUploadIcon
+                    sx={{
+                      fontSize: 28,
+                      color: "primary.main",
+                    }}
+                  />
                 </Avatar>
-                <Typography variant="h5" sx={{ fontWeight: 700 }}>
-                  {title}
-                </Typography>
+                <Box>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: 700,
+                      background: (theme) =>
+                        `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
+                      backgroundClip: "text",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      mb: 0.5,
+                    }}
+                  >
+                    {title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Upload and manage your APK files
+                  </Typography>
+                </Box>
               </Box>
 
               <form onSubmit={handleOnSubmit}>
-                <Stack spacing={2}>
+                <Stack spacing={3}>
                   <TextField
                     label="APK Name"
                     placeholder="MyApp.apk"
@@ -100,15 +133,25 @@ export const ApkForm = ({
                     variant="outlined"
                     size="medium"
                     sx={{
-                      "& .MuiFilledInput-root": {
+                      "& .MuiOutlinedInput-root": {
                         bgcolor: "rgba(255,255,255,0.02)",
-                        borderRadius: 1,
-                        color: "common.white",
-                        "&:hover": { bgcolor: "rgba(255,255,255,0.03)" },
-                        "&::before, &::after": { borderBottom: "none" },
+                        borderRadius: 2,
+                        "& fieldset": {
+                          borderColor: "rgba(255,255,255,0.08)",
+                          borderWidth: 1.5,
+                        },
+                        "&:hover fieldset": {
+                          borderColor: "rgba(255,255,255,0.12)",
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "primary.main",
+                          borderWidth: 2,
+                        },
                       },
-                      "& .MuiFormHelperText-root": {
-                        color: "rgba(255,255,255,0.6)",
+                      "& .MuiInputLabel-root": {
+                        "&.Mui-focused": {
+                          color: "primary.main",
+                        },
                       },
                     }}
                     {...register("apk_name")}
@@ -124,15 +167,25 @@ export const ApkForm = ({
                     variant="outlined"
                     size="medium"
                     sx={{
-                      "& .MuiFilledInput-root": {
+                      "& .MuiOutlinedInput-root": {
                         bgcolor: "rgba(255,255,255,0.02)",
-                        borderRadius: 1,
-                        color: "common.white",
-                        "&:hover": { bgcolor: "rgba(255,255,255,0.03)" },
-                        "&::before, &::after": { borderBottom: "none" },
+                        borderRadius: 2,
+                        "& fieldset": {
+                          borderColor: "rgba(255,255,255,0.08)",
+                          borderWidth: 1.5,
+                        },
+                        "&:hover fieldset": {
+                          borderColor: "rgba(255,255,255,0.12)",
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "primary.main",
+                          borderWidth: 2,
+                        },
                       },
-                      "& .MuiFormHelperText-root": {
-                        color: "rgba(255,255,255,0.6)",
+                      "& .MuiInputLabel-root": {
+                        "&.Mui-focused": {
+                          color: "primary.main",
+                        },
                       },
                     }}
                     {...register("version")}
@@ -142,38 +195,59 @@ export const ApkForm = ({
                 </Stack>
 
                 <Divider
-                  sx={{ my: 3, borderColor: "rgba(255,255,255,0.06)" }}
+                  sx={{
+                    my: 4,
+                    borderColor: "rgba(255,255,255,0.08)",
+                  }}
                 />
 
-                <Box mt={3}>
+                <Box>
                   <Typography
-                    variant="subtitle2"
+                    variant="subtitle1"
                     gutterBottom
-                    color="text.secondary"
+                    sx={{
+                      fontWeight: 600,
+                      mb: 2,
+                    }}
                   >
                     APK File
                   </Typography>
 
-                  <Stack direction="row" spacing={2} alignItems="start">
-                    <Box
-                      width="100%"
-                      display="flex"
-                      flexDirection="column"
-                      gap={1}
-                    >
+                  <Box
+                    sx={{
+                      border: "2px dashed rgba(255,255,255,0.15)",
+                      borderRadius: 3,
+                      p: 3,
+                      bgcolor: "rgba(255,255,255,0.02)",
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        borderColor: "rgba(255,255,255,0.25)",
+                        bgcolor: "rgba(255,255,255,0.04)",
+                      },
+                    }}
+                  >
+                    <Stack spacing={2}>
                       <Button
-                        variant="contained"
+                        variant="outlined"
                         component="label"
                         startIcon={<CloudUploadIcon />}
+                        size="large"
                         sx={{
                           textTransform: "none",
                           borderRadius: 2,
-                          bgcolor: "linear-gradient(90deg,#7c3aed,#0891b2)",
-                          boxShadow: "0 8px 26px rgba(9,30,60,0.45)",
-                          "&:hover": { opacity: 0.96 },
+                          py: 1.5,
+                          fontSize: "1rem",
+                          fontWeight: 600,
+                          borderColor: "rgba(255,255,255,0.2)",
+                          color: "text.primary",
+                          borderWidth: 2,
+                          "&:hover": {
+                            borderColor: "rgba(255,255,255,0.4)",
+                            bgcolor: "rgba(255,255,255,0.05)",
+                          },
                         }}
                       >
-                        Select .apk
+                        Choose APK File
                         <input
                           type="file"
                           accept=".apk"
@@ -182,45 +256,76 @@ export const ApkForm = ({
                         />
                       </Button>
 
-                      <Box>
-                        <Typography variant="body2" color="text.secondary">
-                          {watch("file_path")?.length > 0
-                            ? watch("file_path")?.[0]?.name
-                            : "No file selected"}
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          {watch("file_path")?.length > 0
-                            ? `${(
+                      <Box
+                        sx={{
+                          textAlign: "center",
+                          py: 2,
+                        }}
+                      >
+                        {watch("file_path")?.length > 0 ? (
+                          <Box>
+                            <Typography
+                              variant="body1"
+                              sx={{
+                                fontWeight: 500,
+                                color: "primary.main",
+                                mb: 0.5,
+                              }}
+                            >
+                              {watch("file_path")?.[0]?.name}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                              {`${(
                                 (watch("file_path")?.[0]?.size ?? 0) /
                                 1024 /
                                 1024
-                              ).toFixed(2)} MB`
-                            : "Max 500MB"}
-                        </Typography>
+                              ).toFixed(2)} MB`}
+                            </Typography>
+                            <Button
+                              color="error"
+                              size="small"
+                              onClick={() => setValue("file_path", undefined)}
+                              sx={{
+                                mt: 1.5,
+                                textTransform: "none",
+                              }}
+                            >
+                              Remove File
+                            </Button>
+                          </Box>
+                        ) : (
+                          <Box>
+                            <Typography variant="body2" color="text.secondary">
+                              No file selected
+                            </Typography>
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                              sx={{ opacity: 0.7 }}
+                            >
+                              Maximum file size: 500MB
+                            </Typography>
+                          </Box>
+                        )}
                       </Box>
-                    </Box>
+                    </Stack>
 
-                    <Button
-                      color="inherit"
-                      onClick={() => setValue("file_path", undefined)}
-                    >
-                      Clear
-                    </Button>
-                  </Stack>
-
-                  {formState.errors.file_path?.message && (
-                    <Typography
-                      variant="caption"
-                      color="error"
-                      mt={1}
-                      display="block"
-                    >
-                      {formState.errors.file_path.message as string}
-                    </Typography>
-                  )}
+                    {formState.errors.file_path?.message && (
+                      <Typography
+                        variant="body2"
+                        color="error"
+                        sx={{
+                          mt: 2,
+                          textAlign: "center",
+                        }}
+                      >
+                        {formState.errors.file_path.message as string}
+                      </Typography>
+                    )}
+                  </Box>
                 </Box>
 
-                <Box pt={2}>
+                <Box pt={3}>
                   <Button
                     type="submit"
                     disabled={isLoading}
@@ -229,8 +334,27 @@ export const ApkForm = ({
                     size="large"
                     sx={{
                       borderRadius: 2,
-                      boxShadow: "0 12px 34px rgba(6,18,36,0.7)",
-                      "&:hover": { opacity: 0.98 },
+                      py: 1.75,
+                      fontSize: "1.05rem",
+                      fontWeight: 600,
+                      textTransform: "none",
+                      bgcolor: "primary.main",
+                      boxShadow: (theme) =>
+                        `0 12px 34px ${theme.palette.primary.main}50`,
+                      "&:hover": {
+                        bgcolor: "primary.dark",
+                        boxShadow: (theme) =>
+                          `0 16px 40px ${theme.palette.primary.main}60`,
+                        transform: "translateY(-1px)",
+                      },
+                      "&:active": {
+                        transform: "translateY(0)",
+                      },
+                      "&:disabled": {
+                        bgcolor: "rgba(124,58,237,0.3)",
+                        color: "rgba(255,255,255,0.5)",
+                      },
+                      transition: "all 0.2s ease",
                     }}
                   >
                     {isLoading ? "Uploading..." : "Upload APK"}
