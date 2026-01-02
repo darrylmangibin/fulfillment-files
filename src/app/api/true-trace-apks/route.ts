@@ -7,7 +7,9 @@ import { s3StorageService } from "@/modules/s3/services/s3-storage.service";
 
 export const GET = async () => {
   try {
-    const res = await prisma.trueTraceApk.findMany();
+    const res = await prisma.trueTraceApk.findMany({
+      orderBy: { version: "desc" },
+    });
 
     return NextResponse.json(res);
   } catch (error) {

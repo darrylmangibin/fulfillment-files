@@ -31,6 +31,7 @@ export type ApkListProps = {
   title: string;
   description: string;
   icon?: React.ReactNode;
+  onDelete?: (apkId: string) => void;
 };
 
 export const ApkList = ({
@@ -39,6 +40,7 @@ export const ApkList = ({
   title,
   description,
   icon,
+  onDelete,
 }: ApkListProps) => {
   const Icon = icon ?? <TrackChangesIcon />;
 
@@ -143,9 +145,12 @@ export const ApkList = ({
                       "&:hover": { bgcolor: "rgba(255,255,255,0.02)" },
                     }}
                   >
+                    {/* APK NAME */}
                     <TableCell sx={{ width: 180, height: 60 }}>
                       <Typography variant="body2">{apk.apk_name}</Typography>
                     </TableCell>
+
+                    {/* VERSION */}
                     <TableCell sx={{ width: 60, height: 60 }}>
                       <Chip
                         label={apk.version}
@@ -156,17 +161,24 @@ export const ApkList = ({
                         }}
                       />
                     </TableCell>
+
+                    {/* SIZE */}
                     <TableCell sx={{ width: 80, height: 60 }}>
                       <Typography variant="body2" color="text.secondary">
                         {((apk.size ?? 0) / (1024 * 1024)).toFixed(2)} MB
                       </Typography>
                     </TableCell>
+
+                    {/* DATE */}
                     <TableCell sx={{ width: 100, height: 60 }}>
                       <Typography variant="body2" color="text.secondary">
                         {new Date(apk.created_at).toLocaleDateString()}
                       </Typography>
                     </TableCell>
+
+                    {/* ACTIONS */}
                     <TableCell align="right" sx={{ width: 80, height: 60 }}>
+                      {/* DOWNLOAD */}
                       <IconButton
                         size="small"
                         sx={{ color: "#8b5cf6" }}
@@ -176,7 +188,13 @@ export const ApkList = ({
                       >
                         <DownloadIcon />
                       </IconButton>
-                      <IconButton size="small" sx={{ color: "#ef4444" }}>
+
+                      {/* DELETE */}
+                      <IconButton
+                        size="small"
+                        sx={{ color: "#ef4444" }}
+                        onClick={() => onDelete?.(apk.id)}
+                      >
                         <DeleteIcon />
                       </IconButton>
                     </TableCell>
