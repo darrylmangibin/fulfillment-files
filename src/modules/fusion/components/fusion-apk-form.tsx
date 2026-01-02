@@ -5,10 +5,14 @@ import { useCreateFusionApk } from "@/modules/fusion/hooks/use-create-fusion-apk
 import { toast, Id as ToastId } from "react-toastify";
 import { useRef } from "react";
 import { ApkForm } from "@/components/apk-form";
+import { useQueryClient } from "@tanstack/react-query";
+import { FUSION_APKS_QUERY_KEY } from "@/modules/fusion/constants/fusion.constant";
 
 export const FusionApkForm = () => {
   // single toast id reference to avoid creating multiple toasts during progress
   const progressToastId = useRef<ToastId | null>(null);
+
+  const queryClient = useQueryClient();
 
   const { mutate: createFusionApk, isPending } = useCreateFusionApk({
     onError: (error) => {
@@ -37,6 +41,11 @@ export const FusionApkForm = () => {
         });
         progressToastId.current = null;
       }
+
+      queryClient.invalidateQueries({
+        queryKey: [FUSION_APKS_QUERY_KEY],
+      });
+
       toast.success("APK uploaded successfully!");
     },
     onUploadProgress: (progress) => {

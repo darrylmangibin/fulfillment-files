@@ -4,10 +4,14 @@ import { toast, Id as ToastId } from "react-toastify";
 import { useRef } from "react";
 import { ApkForm } from "@/components/apk-form";
 import { useCreateTrueTraceApk } from "@/modules/true-trace/hooks/use-create-true-trace-apk";
+import { useQueryClient } from "@tanstack/react-query";
+import { TRUE_TRACE_APKS_QUERY_KEY } from "@/modules/true-trace/constants/true-trace.constant";
 
 export const TrueTraceApkForm = () => {
   // single toast id reference to avoid creating multiple toasts during progress
   const progressToastId = useRef<ToastId | null>(null);
+
+  const queryClient = useQueryClient();
 
   const { mutate: createTrueTraceApk, isPending } = useCreateTrueTraceApk({
     onError: (error) => {
@@ -36,6 +40,11 @@ export const TrueTraceApkForm = () => {
         });
         progressToastId.current = null;
       }
+
+      queryClient.invalidateQueries({
+        queryKey: [TRUE_TRACE_APKS_QUERY_KEY],
+      });
+
       toast.success("APK uploaded successfully!");
     },
     onUploadProgress: (progress) => {
