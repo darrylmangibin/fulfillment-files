@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Drawer,
@@ -17,6 +17,8 @@ import {
   Collapse,
   Menu,
   MenuItem,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import {
   Dashboard as DashboardIcon,
@@ -72,7 +74,9 @@ const navItems: NavItem[] = [
 ];
 
 export const AppLayout = ({ children }: { children: React.ReactNode }) => {
-  const [open, setOpen] = useState(true);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const [open, setOpen] = useState(!isMobile);
   const [expandedSections, setExpandedSections] = useState<string[]>([
     "Fusion",
     "True Trace",
@@ -83,6 +87,10 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   const handleDrawerToggle = () => {
+    if (isMobile) {
+      return;
+    }
+
     setOpen(!open);
   };
 
@@ -112,6 +120,12 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
     handlePopoverClose();
   };
 
+  useEffect(() => {
+    if (isMobile) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setOpen(false);
+    }
+  }, [isMobile]);
   return (
     <Box sx={{ display: "flex", minHeight: "100vh" }}>
       <AppBar
@@ -397,7 +411,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
         }}
       >
         <Toolbar />
-        <Box sx={{ p: 4 }}>{children}</Box>
+        <Box sx={{ p: { xs: 2, sm: 3, md: 4 } }}>{children}</Box>
       </Box>
     </Box>
   );
