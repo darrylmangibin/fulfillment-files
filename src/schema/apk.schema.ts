@@ -5,6 +5,10 @@ export const createApkSchema = z.object({
   version: z.string().min(1, { message: "Version is required" }),
   file_path: z.any().refine(
     (val) => {
+      if (Array.isArray(val) && val.length === 0) {
+        return false;
+      }
+
       if (val instanceof globalThis.FileList && val.length === 0) {
         return false;
       }

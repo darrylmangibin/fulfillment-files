@@ -21,7 +21,7 @@ export const FusionApkForm = () => {
     defaultValues: {
       apk_name: "",
       version: "",
-      file_path: undefined,
+      file_path: [],
     },
     resolver: zodResolver(createApkSchema),
   });
