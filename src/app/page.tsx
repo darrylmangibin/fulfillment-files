@@ -6,45 +6,58 @@ import {
   Card,
   CardContent,
   Typography,
-  Avatar,
+  Stack,
+  Divider,
+  Container,
+  Breadcrumbs,
+  Link,
 } from "@mui/material";
 import {
   Build as BuildIcon,
   SystemUpdate as SystemUpdateIcon,
+  Home as HomeIcon,
+  NavigateNext as NavigateNextIcon,
 } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
 
-  const cards = [
+  const buildCards = [
     {
-      title: "Fusion Build Metrics",
-      description: "Upload and manage Fusion APK files",
-      icon: <BuildIcon sx={{ fontSize: 40 }} />,
+      title: "Fusion",
+      description: "Track build performance and usage metrics",
+      icon: <BuildIcon sx={{ fontSize: 32 }} />,
       path: "/dashboard/fusion/builds",
-      gradient: "linear-gradient(135deg,#7c3aed,#0891b2)",
+      color: "#7c3aed",
+      gradient: "linear-gradient(135deg, #7c3aed 0%, #ea580c 100%)",
     },
     {
-      title: "True Trace Build Metrics",
-      description: "Upload and manage True Trace APK files",
-      icon: <BuildIcon sx={{ fontSize: 40 }} />,
+      title: "True Trace",
+      description: "Monitor build analytics and statistics",
+      icon: <BuildIcon sx={{ fontSize: 32 }} />,
       path: "/dashboard/true-trace/builds",
-      gradient: "linear-gradient(135deg,#ec4899,#8b5cf6)",
+      color: "#db2777",
+      gradient: "linear-gradient(135deg, #db2777 0%, #7c3aed 100%)",
     },
+  ];
+
+  const updateCards = [
     {
-      title: "Fusion Update Metrics",
-      description: "Track Fusion app updates and deployments",
-      icon: <SystemUpdateIcon sx={{ fontSize: 40 }} />,
+      title: "Fusion",
+      description: "Track app updates and deployments",
+      icon: <SystemUpdateIcon sx={{ fontSize: 32 }} />,
       path: "/dashboard/fusion/updates",
-      gradient: "linear-gradient(135deg,#10b981,#3b82f6)",
+      color: "#7c3aed",
+      gradient: "linear-gradient(135deg, #7c3aed 0%, #ea580c 100%)",
     },
     {
-      title: "True Trace Update Metrics",
-      description: "Track True Trace app updates and deployments",
-      icon: <SystemUpdateIcon sx={{ fontSize: 40 }} />,
+      title: "True Trace",
+      description: "Monitor update metrics and bandwidth",
+      icon: <SystemUpdateIcon sx={{ fontSize: 32 }} />,
       path: "/dashboard/true-trace/updates",
-      gradient: "linear-gradient(135deg,#f59e0b,#ef4444)",
+      color: "#db2777",
+      gradient: "linear-gradient(135deg, #db2777 0%, #7c3aed 100%)",
     },
   ];
 
@@ -52,63 +65,197 @@ export default function Home() {
     <Box
       sx={{
         minHeight: "calc(100vh - 140px)",
-        p: 3,
       }}
     >
-      <Box mb={4}>
-        <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
-          Dashboard
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Manage your APK files and track uploads
-        </Typography>
-      </Box>
-
-      <Grid container spacing={3}>
-        {cards.map((card) => (
-          <Grid key={card.path} component="div">
-            <Card
-              onClick={() => router.push(card.path)}
+      <Stack spacing={5}>
+        {/* Breadcrumbs */}
+        <Box>
+          <Breadcrumbs
+            separator={
+              <NavigateNextIcon
+                fontSize="small"
+                sx={{ color: "text.secondary" }}
+              />
+            }
+            sx={{
+              "& .MuiBreadcrumbs-separator": {
+                mx: 1,
+              },
+            }}
+          >
+            <Link
+              component="button"
+              onClick={() => router.push("/")}
               sx={{
-                cursor: "pointer",
-                borderRadius: 3,
-                bgcolor: "#02040a",
-                boxShadow: "0 12px 40px rgba(2,6,23,0.8)",
-                transition: "all 0.3s ease",
+                display: "flex",
+                alignItems: "center",
+                gap: 0.5,
+                color: "text.primary",
+                textDecoration: "none",
+                fontSize: 14,
+                fontWeight: 500,
                 "&:hover": {
-                  transform: "translateY(-4px)",
-                  boxShadow: "0 16px 50px rgba(2,6,23,0.9)",
+                  textDecoration: "underline",
                 },
               }}
-              elevation={6}
             >
-              <CardContent sx={{ p: 4 }}>
-                <Box display="flex" alignItems="center" gap={2} mb={2}>
-                  <Avatar
-                    sx={{
-                      width: 56,
-                      height: 56,
-                      bgcolor: "transparent",
-                      background: card.gradient,
-                      boxShadow: "0 8px 24px rgba(12,32,64,0.5)",
-                    }}
-                  >
-                    {card.icon}
-                  </Avatar>
-                  <Box>
-                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                      {card.title}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {card.description}
-                    </Typography>
-                  </Box>
-                </Box>
-              </CardContent>
-            </Card>
+              <HomeIcon sx={{ fontSize: 18 }} />
+              Home
+            </Link>
+            <Typography
+              sx={{
+                fontSize: 14,
+                fontWeight: 500,
+                color: "primary.main",
+              }}
+            >
+              Dashboard
+            </Typography>
+          </Breadcrumbs>
+        </Box>
+
+        {/* Header */}
+        <Box>
+          <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
+            Dashboard
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Manage your APK files and track metrics
+          </Typography>
+        </Box>
+
+        {/* Build Metrics Section */}
+        <Box>
+          <Box mb={3}>
+            <Stack direction="row" alignItems="center" spacing={2} mb={1}>
+              <BuildIcon sx={{ fontSize: 24, color: "text.secondary" }} />
+              <Typography variant="h6" fontWeight={600}>
+                Build Metrics
+              </Typography>
+            </Stack>
+            <Typography variant="caption" color="text.secondary">
+              Monitor build performance and resource usage
+            </Typography>
+            <Divider sx={{ mt: 2, borderColor: "rgba(255,255,255,0.08)" }} />
+          </Box>
+
+          <Grid container spacing={3}>
+            {buildCards.map((card) => (
+              <Grid key={card.path}>
+                <Card
+                  onClick={() => router.push(card.path)}
+                  sx={{
+                    cursor: "pointer",
+                    bgcolor: "transparent",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    borderRadius: 2,
+                    transition: "all 0.2s ease",
+                    "&:hover": {
+                      borderColor: card.color,
+                      transform: "translateY(-2px)",
+                      boxShadow: `0 8px 24px ${card.color}15`,
+                    },
+                  }}
+                  elevation={0}
+                >
+                  <CardContent sx={{ p: 3 }}>
+                    <Stack spacing={2}>
+                      <Box
+                        sx={{
+                          width: 48,
+                          height: 48,
+                          borderRadius: 1.5,
+                          background: card.gradient,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        {card.icon}
+                      </Box>
+                      <Box>
+                        <Typography variant="h6" fontWeight={600} mb={0.5}>
+                          {card.title}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          {card.description}
+                        </Typography>
+                      </Box>
+                    </Stack>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
+        </Box>
+
+        <Grid container spacing={3}>
+          {updateCards.map((card) => (
+            <Grid key={card.path}>
+              <Card
+                onClick={() => router.push(card.path)}
+                sx={{
+                  cursor: "pointer",
+                  bgcolor: "transparent",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: 2,
+                  transition: "all 0.2s ease",
+                  "&:hover": {
+                    borderColor: card.color,
+                    transform: "translateY(-2px)",
+                    boxShadow: `0 8px 24px ${card.color}15`,
+                  },
+                }}
+                elevation={0}
+              >
+                <CardContent sx={{ p: 3 }}>
+                  <Stack spacing={2}>
+                    <Box
+                      sx={{
+                        width: 48,
+                        height: 48,
+                        borderRadius: 1.5,
+                        background: card.gradient,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {card.icon}
+                    </Box>
+                    <Box>
+                      <Typography variant="h6" fontWeight={600} mb={0.5}>
+                        {card.title}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        {card.description}
+                      </Typography>
+                    </Box>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+
+        {/* Update Metrics Section */}
+        <Box>
+          <Box mb={3}>
+            <Stack direction="row" alignItems="center" spacing={2} mb={1}>
+              <SystemUpdateIcon
+                sx={{ fontSize: 24, color: "text.secondary" }}
+              />
+              <Typography variant="h6" fontWeight={600}>
+                Update Metrics
+              </Typography>
+            </Stack>
+            <Typography variant="caption" color="text.secondary">
+              Track OTA updates, bandwidth, and user engagement
+            </Typography>
+            <Divider sx={{ mt: 2, borderColor: "rgba(255,255,255,0.08)" }} />
+          </Box>
+        </Box>
+      </Stack>
     </Box>
   );
 }

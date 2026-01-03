@@ -24,11 +24,9 @@ export default function FusionDashboardBuildMetricPage() {
     <Box
       sx={{
         minHeight: "100vh",
-        py: 4,
       }}
     >
-      <Container maxWidth="xl">
-        <Stack spacing={4}>
+      <Stack spacing={4}>
           {/* Header Section */}
           <Paper
             elevation={0}
@@ -150,7 +148,6 @@ export default function FusionDashboardBuildMetricPage() {
           {/* Charts Section */}
           <BuildMetricsChart data={data} loading={isLoading} />
         </Stack>
-      </Container>
     </Box>
   );
 }
