@@ -15,6 +15,8 @@ import {
   Toolbar,
   AppBar,
   Collapse,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import {
   Dashboard as DashboardIcon,
@@ -75,6 +77,8 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
     "Fusion",
     "True Trace",
   ]);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [popoverSection, setPopoverSection] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -88,6 +92,24 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
         ? prev.filter((item) => item !== label)
         : [...prev, label]
     );
+  };
+
+  const handlePopoverOpen = (
+    event: React.MouseEvent<HTMLElement>,
+    label: string
+  ) => {
+    setAnchorEl(event.currentTarget);
+    setPopoverSection(label);
+  };
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null);
+    setPopoverSection(null);
+  };
+
+  const handleSubItemClick = (path: string) => {
+    router.push(path);
+    handlePopoverClose();
   };
 
   return (
@@ -142,7 +164,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
         }}
       >
         <Toolbar />
-        <Box sx={{ overflow: "auto", mt: 2 }}>
+        <Box sx={{ mt: 2 }}>
           <List>
             {navItems.map((item) => {
               const hasSubItems = item.subItems && item.subItems.length > 0;
@@ -156,9 +178,13 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
                 <Box key={item.label}>
                   <ListItem disablePadding sx={{ display: "block" }}>
                     <ListItemButton
-                      onClick={() => {
+                      onClick={(e) => {
                         if (hasSubItems) {
-                          handleSectionToggle(item.label);
+                          if (open) {
+                            handleSectionToggle(item.label);
+                          } else {
+                            handlePopoverOpen(e, item.label);
+                          }
                         } else if (item.path) {
                           router.push(item.path);
                         }
@@ -266,6 +292,99 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
               );
             })}
           </List>
+
+          {/* Popover menu for collapsed state */}
+          {navItems.map((item) => {
+            if (!item.subItems) return null;
+            const isOpen = popoverSection === item.label && Boolean(anchorEl);
+            return (
+              <Menu
+                key={`menu-${item.label}`}
+                anchorEl={anchorEl}
+                open={isOpen}
+                onClose={handlePopoverClose}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+                PaperProps={{
+                  sx: {
+                    bgcolor: "#02040a",
+                    border: "1px solid rgba(255,255,255,0.06)",
+                    ml: 1,
+                    minWidth: 200,
+                    maxWidth: 250,
+                    overflow: "visible",
+                  },
+                }}
+                slotProps={{
+                  paper: {
+                    sx: {
+                      overflow: "visible",
+                    },
+                  },
+                }}
+              >
+                <Typography
+                  variant="caption"
+                  sx={{
+                    px: 2,
+                    py: 1,
+                    display: "block",
+                    color: "text.secondary",
+                    fontWeight: 600,
+                  }}
+                >
+                  {item.label}
+                </Typography>
+                {item.subItems!.map((subItem) => {
+                  const isSubActive = pathname === subItem.path;
+                  return (
+                    <MenuItem
+                      key={subItem.path}
+                      onClick={() => handleSubItemClick(subItem.path)}
+                      sx={{
+                        px: 2,
+                        py: 1.5,
+                        mx: 1,
+                        my: 0.5,
+                        borderRadius: 1,
+                        bgcolor: isSubActive
+                          ? (theme) => `${theme.palette.primary.main}26`
+                          : "transparent",
+                        color: isSubActive ? "primary.main" : "text.secondary",
+                        "&:hover": {
+                          bgcolor: isSubActive
+                            ? (theme) => `${theme.palette.primary.main}40`
+                            : "rgba(255,255,255,0.05)",
+                        },
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          minWidth: 0,
+                          mr: 2,
+                          color: isSubActive
+                            ? "primary.main"
+                            : "text.secondary",
+                        }}
+                      >
+                        {subItem.icon}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={subItem.label}
+                        primaryTypographyProps={{ variant: "body2" }}
+                      />
+                    </MenuItem>
+                  );
+                })}
+              </Menu>
+            );
+          })}
         </Box>
       </Drawer>
 
