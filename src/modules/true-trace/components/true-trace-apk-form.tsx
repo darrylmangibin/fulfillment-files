@@ -6,12 +6,24 @@ import { ApkForm } from "@/components/apk-form";
 import { useCreateTrueTraceApk } from "@/modules/true-trace/hooks/use-create-true-trace-apk";
 import { useQueryClient } from "@tanstack/react-query";
 import { TRUE_TRACE_APKS_QUERY_KEY } from "@/modules/true-trace/constants/true-trace.constant";
+import { FormProvider, useForm } from "react-hook-form";
+import { createApkSchema, CreateApkSchema } from "@/schema/apk.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const TrueTraceApkForm = () => {
   // single toast id reference to avoid creating multiple toasts during progress
   const progressToastId = useRef<ToastId | null>(null);
 
   const queryClient = useQueryClient();
+
+  const methods = useForm<CreateApkSchema>({
+    defaultValues: {
+      apk_name: "",
+      version: "",
+      file_path: [],
+    },
+    resolver: zodResolver(createApkSchema),
+  });
 
   const { mutate: createTrueTraceApk, isPending } = useCreateTrueTraceApk({
     onError: (error) => {
@@ -67,10 +79,12 @@ export const TrueTraceApkForm = () => {
   });
 
   return (
-    <ApkForm
-      onSubmit={createTrueTraceApk}
-      isLoading={isPending}
-      title="Upload TrueTrace APK"
-    />
+    <FormProvider {...methods}>
+      <ApkForm
+        onSubmit={createTrueTraceApk}
+        isLoading={isPending}
+        title="Upload TrueTrace APK"
+      />
+    </FormProvider>
   );
 };

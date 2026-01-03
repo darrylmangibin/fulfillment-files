@@ -20,6 +20,7 @@ export type DeleteApkDialogProps = {
   title: string;
   description: string;
   onSubmit?: () => Promise<void> | void;
+  isLoading?: boolean;
 };
 
 const Transition = forwardRef(function Transition(
@@ -37,6 +38,7 @@ export const DeleteApkDialog = ({
   title,
   description,
   onSubmit,
+  isLoading,
 }: DeleteApkDialogProps) => {
   return (
     <Dialog
@@ -157,8 +159,9 @@ export const DeleteApkDialog = ({
             fontWeight: 600,
             minWidth: 100,
           }}
+          disabled={isLoading}
         >
-          Delete APK
+          {isLoading ? "Deleting..." : "Delete APK"}
         </Button>
       </DialogActions>
     </Dialog>

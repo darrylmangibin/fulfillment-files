@@ -30,7 +30,7 @@ export const FusionApkList = () => {
 
   return (
     <>
-      <AppLoader open={isPending} message="Deleting APK..." />
+      <AppLoader open={isPending} message="Deleting Fusion APK..." />
       <ApkList
         data={data ?? []}
         isLoading={isLoading}
@@ -51,6 +51,7 @@ export const FusionApkList = () => {
             deleteFusionApk(selectedApkId);
           }
         }}
+        isLoading={isPending}
       />
     </>
   );

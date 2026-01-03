@@ -39,6 +39,15 @@ export class TrueTraceService {
 
     return data;
   }
+
+  /**
+   * Delete a TrueTrace APK entry by its ID.
+   * @param id
+   */
+  async deleteTrueTraceApk(id: string): Promise<TrueTraceApk> {
+    const { data } = await axios.delete<TrueTraceApk>(`/true-trace-apks/${id}`);
+    return data;
+  }
 }
 
 export const trueTraceService = new TrueTraceService();
