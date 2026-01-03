@@ -49,7 +49,7 @@ export const ApkList = ({
   }
 
   return (
-    <Box sx={{ p: 3 }}>
+    <Box>
       <Box display="flex" alignItems="center" gap={2} mb={3}>
         <Avatar
           sx={{

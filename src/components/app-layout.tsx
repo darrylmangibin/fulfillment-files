@@ -397,7 +397,7 @@ export const AppLayout = ({ children }: { children: React.ReactNode }) => {
         }}
       >
         <Toolbar />
-        <Box sx={{ p: 3 }}>{children}</Box>
+        <Box sx={{ p: 4 }}>{children}</Box>
       </Box>
     </Box>
   );

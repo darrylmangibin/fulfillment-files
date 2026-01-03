@@ -124,6 +124,73 @@ export default function Home() {
           </Typography>
         </Box>
 
+        {/* Update Metrics Section */}
+        <Box>
+          <Box mb={3}>
+            <Stack direction="row" alignItems="center" spacing={2} mb={1}>
+              <SystemUpdateIcon
+                sx={{ fontSize: 24, color: "text.secondary" }}
+              />
+              <Typography variant="h6" fontWeight={600}>
+                Update Metrics
+              </Typography>
+            </Stack>
+            <Typography variant="caption" color="text.secondary">
+              Track OTA updates, bandwidth, and user engagement
+            </Typography>
+            <Divider sx={{ mt: 2, borderColor: "rgba(255,255,255,0.08)" }} />
+          </Box>
+        </Box>
+
+        <Grid container spacing={3}>
+          {updateCards.map((card) => (
+            <Grid key={card.path}>
+              <Card
+                onClick={() => router.push(card.path)}
+                sx={{
+                  cursor: "pointer",
+                  bgcolor: "transparent",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: 2,
+                  transition: "all 0.2s ease",
+                  "&:hover": {
+                    borderColor: card.color,
+                    transform: "translateY(-2px)",
+                    boxShadow: `0 8px 24px ${card.color}15`,
+                  },
+                }}
+                elevation={0}
+              >
+                <CardContent sx={{ p: 3 }}>
+                  <Stack spacing={2}>
+                    <Box
+                      sx={{
+                        width: 48,
+                        height: 48,
+                        borderRadius: 1.5,
+                        background: card.gradient,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {card.icon}
+                    </Box>
+                    <Box>
+                      <Typography variant="h6" fontWeight={600} mb={0.5}>
+                        {card.title}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        {card.description}
+                      </Typography>
+                    </Box>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+
         {/* Build Metrics Section */}
         <Box>
           <Box mb={3}>
@@ -187,73 +254,6 @@ export default function Home() {
               </Grid>
             ))}
           </Grid>
-        </Box>
-
-        <Grid container spacing={3}>
-          {updateCards.map((card) => (
-            <Grid key={card.path}>
-              <Card
-                onClick={() => router.push(card.path)}
-                sx={{
-                  cursor: "pointer",
-                  bgcolor: "transparent",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  borderRadius: 2,
-                  transition: "all 0.2s ease",
-                  "&:hover": {
-                    borderColor: card.color,
-                    transform: "translateY(-2px)",
-                    boxShadow: `0 8px 24px ${card.color}15`,
-                  },
-                }}
-                elevation={0}
-              >
-                <CardContent sx={{ p: 3 }}>
-                  <Stack spacing={2}>
-                    <Box
-                      sx={{
-                        width: 48,
-                        height: 48,
-                        borderRadius: 1.5,
-                        background: card.gradient,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {card.icon}
-                    </Box>
-                    <Box>
-                      <Typography variant="h6" fontWeight={600} mb={0.5}>
-                        {card.title}
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary">
-                        {card.description}
-                      </Typography>
-                    </Box>
-                  </Stack>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-
-        {/* Update Metrics Section */}
-        <Box>
-          <Box mb={3}>
-            <Stack direction="row" alignItems="center" spacing={2} mb={1}>
-              <SystemUpdateIcon
-                sx={{ fontSize: 24, color: "text.secondary" }}
-              />
-              <Typography variant="h6" fontWeight={600}>
-                Update Metrics
-              </Typography>
-            </Stack>
-            <Typography variant="caption" color="text.secondary">
-              Track OTA updates, bandwidth, and user engagement
-            </Typography>
-            <Divider sx={{ mt: 2, borderColor: "rgba(255,255,255,0.08)" }} />
-          </Box>
         </Box>
       </Stack>
     </Box>
