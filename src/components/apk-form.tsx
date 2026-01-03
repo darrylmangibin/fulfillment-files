@@ -13,7 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { useForm } from "react-hook-form";
+import { useForm, useFormContext } from "react-hook-form";
 import { createApkSchema, CreateApkSchema } from "@/schema/apk.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -31,14 +31,17 @@ export const ApkForm = ({
   title,
 }: ApkFormProps) => {
   const { register, setValue, handleSubmit, formState, watch } =
-    useForm<CreateApkSchema>({
-      defaultValues: {
-        apk_name: defaultValues?.apk_name || "",
-        version: defaultValues?.version || "",
-        file_path: defaultValues?.file_path || undefined,
-      },
-      resolver: zodResolver(createApkSchema),
-    });
+    useFormContext<CreateApkSchema>();
+
+  // const { register, setValue, handleSubmit, formState, watch } =
+  //   useForm<CreateApkSchema>({
+  //     defaultValues: {
+  //       apk_name: defaultValues?.apk_name || "",
+  //       version: defaultValues?.version || "",
+  //       file_path: defaultValues?.file_path || undefined,
+  //     },
+  //     resolver: zodResolver(createApkSchema),
+  //   });
 
   const handleOnSubmit = handleSubmit((data) => {
     onSubmit?.({

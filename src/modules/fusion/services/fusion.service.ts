@@ -41,6 +41,16 @@ export class FusionService {
 
     return data;
   }
+
+  /**
+   * Delete a Fusion APK entry by its ID.
+   * @param id
+   */
+  async deleteFusionApk(id: string): Promise<FusionApk> {
+    const { data } = await axios.delete<FusionApk>(`/fusion-apks/${id}`);
+
+    return data;
+  }
 }
 
 export const fusionService = new FusionService();

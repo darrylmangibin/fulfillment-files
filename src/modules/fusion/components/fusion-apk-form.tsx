@@ -7,12 +7,24 @@ import { useRef } from "react";
 import { ApkForm } from "@/components/apk-form";
 import { useQueryClient } from "@tanstack/react-query";
 import { FUSION_APKS_QUERY_KEY } from "@/modules/fusion/constants/fusion.constant";
+import { FormProvider, useForm } from "react-hook-form";
+import { createApkSchema, CreateApkSchema } from "@/schema/apk.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export const FusionApkForm = () => {
   // single toast id reference to avoid creating multiple toasts during progress
   const progressToastId = useRef<ToastId | null>(null);
 
   const queryClient = useQueryClient();
+
+  const methods = useForm<CreateApkSchema>({
+    defaultValues: {
+      apk_name: "",
+      version: "",
+      file_path: undefined,
+    },
+    resolver: zodResolver(createApkSchema),
+  });
 
   const { mutate: createFusionApk, isPending } = useCreateFusionApk({
     onError: (error) => {
@@ -68,10 +80,12 @@ export const FusionApkForm = () => {
   });
 
   return (
-    <ApkForm
-      onSubmit={createFusionApk}
-      isLoading={isPending}
-      title="Upload Fusion APK"
-    />
+    <FormProvider {...methods}>
+      <ApkForm
+        onSubmit={createFusionApk}
+        isLoading={isPending}
+        title="Upload Fusion APK"
+      />
+    </FormProvider>
   );
 };
