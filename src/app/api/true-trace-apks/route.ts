@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { ZodError } from "zod";
 
 import { prisma } from "@/lib/client";
@@ -22,7 +22,7 @@ export const GET = async () => {
   }
 };
 
-export const POST = async (request: Request) => {
+export const POST = async (request: NextRequest) => {
   let uploadResult: UploadResult | null = null;
 
   try {
@@ -38,36 +38,61 @@ export const POST = async (request: Request) => {
       );
     }
 
-    uploadResult = await s3StorageService.uploadBuffer({
-      file: {
-        buffer: Buffer.from(await file.arrayBuffer()),
-        mimetype: file.type,
-        originalname: file.name,
-        size: file.size,
-      } as unknown as Express.Multer.File,
-    });
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          uploadResult = await s3StorageService.uploadBuffer({
+            file: {
+              buffer: Buffer.from(await file.arrayBuffer()),
+              mimetype: file.type,
+              originalname: file.name,
+              size: file.size,
+            } as unknown as Express.Multer.File,
+            onProgress: (progress) => {
+              controller.enqueue(
+                new TextEncoder().encode(
+                  JSON.stringify({ progress, data: null }) + "\n"
+                )
+              );
+            },
+          });
 
-    // Save metadata to DB
-    const trueTraceAPk = await prisma.trueTraceApk.create({
-      data: {
-        apk_name: String(apk_name),
-        version: String(version),
-        file_path: uploadResult.publicUrl,
-        size: file.size,
-        key: uploadResult.key,
+          const trueTraceApk = await prisma.trueTraceApk.create({
+            data: {
+              apk_name: String(apk_name),
+              version: String(version),
+              file_path: uploadResult.publicUrl,
+              size: file.size,
+              key: uploadResult.key,
+            },
+          });
+
+          controller.enqueue(
+            new TextEncoder().encode(
+              JSON.stringify({ progress: 100, data: trueTraceApk }) + "\n"
+            )
+          );
+          controller.close();
+        } catch (error) {
+          if (uploadResult) {
+            console.log("Cleaning up uploaded file due to error...");
+            await s3StorageService.deleteObject({
+              key: uploadResult.key,
+            });
+          }
+
+          controller.error(error);
+        }
       },
     });
 
-    return NextResponse.json(trueTraceAPk);
+    return new Response(stream, {
+      headers: { "Content-Type": "text/plain" },
+      status: 201,
+      statusText: "Created",
+    });
   } catch (error) {
-    console.log("[ERROR]: ", JSON.stringify(error, null, 2));
-
-    if (uploadResult) {
-      console.log("Cleaning up uploaded file due to error...");
-      await s3StorageService.deleteObject({
-        key: uploadResult.key,
-      });
-    }
+    console.log("[ERROR]: ", error);
 
     if (error instanceof ZodError) {
       return NextResponse.json(

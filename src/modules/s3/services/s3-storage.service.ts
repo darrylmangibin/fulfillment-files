@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import {
   S3Client,
   PutObjectCommand,
   GetObjectCommand,
   DeleteObjectCommand,
+  PutObjectCommandInput,
+  HeadObjectCommand,
 } from "@aws-sdk/client-s3";
+import { Upload } from "@aws-sdk/lib-storage";
 import { extname } from "path";
 import { v4 as uuidv4 } from "uuid";
 import { UploadResult } from "@/modules/s3/types/s3-storage.type";
@@ -39,30 +43,49 @@ export class S3StorageService {
     file: Express.Multer.File;
     key?: string;
     signedUrlTtlSeconds?: number;
+    onProgress?: (progress: number) => void;
   }): Promise<UploadResult> {
     if (!this.client) {
       throw new Error("S3 client not initialized");
     }
-    const { file } = params;
 
+    const { file, onProgress } = params;
     const fileExtension = extname(file.originalname) || "";
     const key = params.key || `${uuidv4()}${fileExtension}`;
 
-    const command = new PutObjectCommand({
+    const uploadParams: PutObjectCommandInput = {
       Bucket: this.bucket,
       Key: key,
-      Body: file.buffer,
+      Body: file.buffer, // still OK — Upload wraps it as stream
       ContentType: file.mimetype,
       Metadata: {
         file_extension: fileExtension.replace(".", ""),
       },
+    };
+
+    const upload = new Upload({
+      client: this.client,
+      params: uploadParams,
     });
 
-    const response = await this.client.send(command);
+    upload.on("httpUploadProgress", (progress) => {
+      if (!progress.total || !onProgress) return;
+      const percent = Math.round(
+        ((progress.loaded ?? 0) / progress.total) * 100
+      );
+      onProgress(percent);
+    });
+
+    const response = await upload.done();
     const etag = typeof response.ETag === "string" ? response.ETag : undefined;
+
     const signedUrlTtlSeconds = params.signedUrlTtlSeconds ?? 900;
 
-    const getCmd = new GetObjectCommand({ Bucket: this.bucket, Key: key });
+    const getCmd = new GetObjectCommand({
+      Bucket: this.bucket,
+      Key: key,
+    });
+
     const signedUrl = await getSignedUrl(this.client, getCmd, {
       expiresIn: signedUrlTtlSeconds,
     });
@@ -84,8 +107,20 @@ export class S3StorageService {
   }
 
   public async deleteObject(params: { key: string }): Promise<void> {
-    if (!this.client) {
-      throw new Error("S3 client not initialized");
+    try {
+      // Step 1: Check if object exists
+      if (!this.client) {
+        throw new Error("S3 client not initialized");
+      }
+
+      await this.client.send(
+        new HeadObjectCommand({ Bucket: this.bucket, Key: params.key })
+      );
+    } catch (err: any) {
+      if (err.name === "NotFound") {
+        throw new Error(`S3 object with key "${params.key}" does not exist`);
+      }
+      throw err; // other errors
     }
 
     const command = new DeleteObjectCommand({

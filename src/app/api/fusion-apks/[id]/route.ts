@@ -18,6 +18,8 @@ export const DELETE = async (
       await s3StorageService.deleteObject({
         key: fusionApk.key,
       });
+
+      console.log(`Deleted S3 object with key: ${fusionApk.key}`);
     }
 
     await prisma.fusionApk.delete({
