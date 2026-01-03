@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { TimeFrame } from "@/lib/metrics-timespan";
-import { useFusionBuildMetrics } from "@/modules/fusion/hooks/use-fusion-metrics";
 import {
   Box,
   Container,
@@ -15,10 +14,11 @@ import {
 } from "@mui/material";
 import { BuildMetricsChart } from "@/components/build-metrics-chart";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import { useTrueTraceBuildMetrics } from "@/modules/true-trace/hooks/use-true-trace-metrics";
 
-export default function FusionApkPage() {
+export default function TrueTraceApkPage() {
   const [timeframe, setTimeframe] = useState<TimeFrame>(TimeFrame.MONTHLY);
-  const { data, isLoading } = useFusionBuildMetrics(timeframe);
+  const { data, isLoading } = useTrueTraceBuildMetrics(timeframe);
 
   return (
     <Box
@@ -67,7 +67,7 @@ export default function FusionApkPage() {
                     textShadow: "0 0 1px rgba(88, 166, 255, 0.7)",
                   }}
                 >
-                  Fusion Build Metrics
+                  True Trace Build Metrics
                 </Typography>
                 <Typography variant="body1" color="#8b949e" fontWeight={500}>
                   Track your build performance and usage metrics

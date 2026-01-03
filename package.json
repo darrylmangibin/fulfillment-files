@@ -20,6 +20,7 @@
     "@hookform/resolvers": "^5.2.2",
     "@mui/icons-material": "^7.3.6",
     "@mui/material": "^7.3.6",
+    "@mui/x-charts": "^8.23.0",
     "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^6.19.1",
     "@supabase/supabase-js": "^2.89.0",

@@ -13,7 +13,6 @@ import {
   TrackChanges as TrackChangesIcon,
 } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
@@ -34,16 +33,6 @@ export default function Home() {
       gradient: "linear-gradient(135deg,#ec4899,#8b5cf6)",
     },
   ];
-
-  useEffect(() => {
-    const x = async () => {
-      const res = await fetch("/api/dashboard", { method: "GET" });
-      const data = await res.json();
-      console.log(data);
-    };
-
-    x();
-  }, []);
 
   return (
     <Box
