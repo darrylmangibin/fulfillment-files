@@ -5,6 +5,7 @@ import { TRUE_TRACE_APKS_QUERY_KEY } from "@/modules/true-trace/constants/true-t
 import { useDeleteTrueTraceApk } from "@/modules/true-trace/hooks/use-delete-true-trace-apk";
 import { useGetTrueTraceApks } from "@/modules/true-trace/hooks/use-get-true-trace-apks";
 import { TrackChanges } from "@mui/icons-material";
+import { TrueTraceApk } from "@prisma/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -21,7 +22,16 @@ export const TrueTraceApkList = () => {
         `Failed to delete APK: ${error.response?.data?.error || error.message}`
       );
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      queryClient.setQueriesData(
+        {
+          queryKey: [TRUE_TRACE_APKS_QUERY_KEY],
+        },
+        (oldData: TrueTraceApk[]) => {
+          return oldData.filter((apk) => apk.id !== data.id);
+        }
+      );
+
       queryClient.invalidateQueries({ queryKey: [TRUE_TRACE_APKS_QUERY_KEY] });
       setSelectedApkId(null);
       toast.success("APK deleted successfully");

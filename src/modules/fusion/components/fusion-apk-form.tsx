@@ -10,6 +10,7 @@ import { FUSION_APKS_QUERY_KEY } from "@/modules/fusion/constants/fusion.constan
 import { FormProvider, useForm } from "react-hook-form";
 import { createApkSchema, CreateApkSchema } from "@/schema/apk.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { FusionApk } from "@prisma/client";
 
 export const FusionApkForm = () => {
   // single toast id reference to avoid creating multiple toasts during progress
@@ -42,7 +43,7 @@ export const FusionApkForm = () => {
         `Error uploading APK: ${error.response?.data?.error || error.message}`
       );
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       if (progressToastId.current) {
         toast.update(progressToastId.current, {
           render: `Upload Progress: 100%`,
@@ -54,8 +55,23 @@ export const FusionApkForm = () => {
         progressToastId.current = null;
       }
 
+      queryClient.setQueriesData(
+        {
+          queryKey: [FUSION_APKS_QUERY_KEY],
+        },
+        (oldData: FusionApk[]) => {
+          return [data, ...oldData];
+        }
+      );
+
       queryClient.invalidateQueries({
         queryKey: [FUSION_APKS_QUERY_KEY],
+      });
+
+      methods.reset({
+        apk_name: "",
+        version: "",
+        file_path: [],
       });
 
       toast.success("APK uploaded successfully!");

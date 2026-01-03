@@ -4,6 +4,7 @@ import { ZodError } from "zod";
 import { prisma } from "@/lib/client";
 import { Prisma } from "@prisma/client";
 import { s3StorageService } from "@/modules/s3/services/s3-storage.service";
+import { UploadResult } from "@/modules/s3/types/s3-storage.type";
 
 export const GET = async () => {
   try {
@@ -22,6 +23,8 @@ export const GET = async () => {
 };
 
 export const POST = async (request: NextRequest) => {
+  let uploadResult: UploadResult | null = null;
+
   try {
     const formData = await request.formData();
     const apk_name = formData.get("apk_name");
@@ -35,7 +38,7 @@ export const POST = async (request: NextRequest) => {
       );
     }
 
-    const uploadResult = await s3StorageService.uploadBuffer({
+    uploadResult = await s3StorageService.uploadBuffer({
       file: {
         buffer: Buffer.from(await file.arrayBuffer()),
         mimetype: file.type,
@@ -58,6 +61,13 @@ export const POST = async (request: NextRequest) => {
   } catch (error) {
     console.log("[ERROR]: ", error);
 
+    if (uploadResult) {
+      console.log("Cleaning up uploaded file due to error...");
+      await s3StorageService.deleteObject({
+        key: uploadResult.key,
+      });
+    }
+
     if (error instanceof ZodError) {
       return NextResponse.json(
         { error: JSON.parse(error.message) },
@@ -66,6 +76,17 @@ export const POST = async (request: NextRequest) => {
     }
 
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        return NextResponse.json(
+          {
+            error: `APK ${(error.meta?.target as string[]).join(
+              ", "
+            )} already exists`,
+          },
+          { status: 422 }
+        );
+      }
+
       return NextResponse.json({ error: error.message }, { status: 422 });
     }
 

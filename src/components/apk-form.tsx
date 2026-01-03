@@ -23,12 +23,7 @@ export type ApkFormProps = {
   title: string;
 };
 
-export const ApkForm = ({
-  onSubmit,
-  defaultValues,
-  isLoading,
-  title,
-}: ApkFormProps) => {
+export const ApkForm = ({ onSubmit, isLoading, title }: ApkFormProps) => {
   const { setValue, handleSubmit, register, control, watch } =
     useFormContext<CreateApkSchema>();
 
@@ -129,6 +124,7 @@ export const ApkForm = ({
                           fullWidth
                           variant="outlined"
                           size="medium"
+                          disabled={isLoading}
                           sx={{
                             "& .MuiOutlinedInput-root": {
                               bgcolor: "rgba(255,255,255,0.02)",
@@ -171,6 +167,7 @@ export const ApkForm = ({
                           fullWidth
                           variant="outlined"
                           size="medium"
+                          disabled={isLoading}
                           sx={{
                             "& .MuiOutlinedInput-root": {
                               bgcolor: "rgba(255,255,255,0.02)",
@@ -249,6 +246,7 @@ export const ApkForm = ({
                               component="label"
                               startIcon={<CloudUploadIcon />}
                               size="large"
+                              disabled={isLoading}
                               sx={{
                                 textTransform: "none",
                                 borderRadius: 2,
@@ -307,6 +305,7 @@ export const ApkForm = ({
                                     onClick={() =>
                                       setValue("file_path", undefined)
                                     }
+                                    disabled={isLoading}
                                     sx={{
                                       mt: 1.5,
                                       textTransform: "none",

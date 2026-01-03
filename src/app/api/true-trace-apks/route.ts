@@ -4,6 +4,7 @@ import { ZodError } from "zod";
 import { prisma } from "@/lib/client";
 import { Prisma } from "@prisma/client";
 import { s3StorageService } from "@/modules/s3/services/s3-storage.service";
+import { UploadResult } from "@/modules/s3/types/s3-storage.type";
 
 export const GET = async () => {
   try {
@@ -22,6 +23,8 @@ export const GET = async () => {
 };
 
 export const POST = async (request: Request) => {
+  let uploadResult: UploadResult | null = null;
+
   try {
     const formData = await request.formData();
     const apk_name = formData.get("apk_name");
@@ -35,7 +38,7 @@ export const POST = async (request: Request) => {
       );
     }
 
-    const uploadResult = await s3StorageService.uploadBuffer({
+    uploadResult = await s3StorageService.uploadBuffer({
       file: {
         buffer: Buffer.from(await file.arrayBuffer()),
         mimetype: file.type,
@@ -45,7 +48,7 @@ export const POST = async (request: Request) => {
     });
 
     // Save metadata to DB
-    const fusionApk = await prisma.trueTraceApk.create({
+    const trueTraceAPk = await prisma.trueTraceApk.create({
       data: {
         apk_name: String(apk_name),
         version: String(version),
@@ -55,9 +58,16 @@ export const POST = async (request: Request) => {
       },
     });
 
-    return NextResponse.json(fusionApk);
+    return NextResponse.json(trueTraceAPk);
   } catch (error) {
-    console.log("[ERROR]: ", error);
+    console.log("[ERROR]: ", JSON.stringify(error, null, 2));
+
+    if (uploadResult) {
+      console.log("Cleaning up uploaded file due to error...");
+      await s3StorageService.deleteObject({
+        key: uploadResult.key,
+      });
+    }
 
     if (error instanceof ZodError) {
       return NextResponse.json(
@@ -67,6 +77,17 @@ export const POST = async (request: Request) => {
     }
 
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        return NextResponse.json(
+          {
+            error: `APK ${(error.meta?.target as string[]).join(
+              ", "
+            )} already exists`,
+          },
+          { status: 422 }
+        );
+      }
+
       return NextResponse.json({ error: error.message }, { status: 422 });
     }
 

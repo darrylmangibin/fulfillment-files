@@ -5,6 +5,7 @@ import { FUSION_APKS_QUERY_KEY } from "@/modules/fusion/constants/fusion.constan
 import { useDeleteFusionApk } from "@/modules/fusion/hooks/use-delete-fusion-apk";
 import { useGetFusionApks } from "@/modules/fusion/hooks/use-get-fusion-apks";
 import { Android } from "@mui/icons-material";
+import { FusionApk } from "@prisma/client";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -21,9 +22,19 @@ export const FusionApkList = () => {
         `Failed to delete APK: ${error.response?.data?.error || error.message}`
       );
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      queryClient.setQueriesData(
+        {
+          queryKey: [FUSION_APKS_QUERY_KEY],
+        },
+        (oldData: FusionApk[]) => {
+          return oldData.filter((apk) => apk.id !== data.id);
+        }
+      );
+
       queryClient.invalidateQueries({ queryKey: [FUSION_APKS_QUERY_KEY] });
       setSelectedApkId(null);
+
       toast.success("APK deleted successfully");
     },
   });

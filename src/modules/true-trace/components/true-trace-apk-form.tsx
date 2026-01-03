@@ -9,6 +9,7 @@ import { TRUE_TRACE_APKS_QUERY_KEY } from "@/modules/true-trace/constants/true-t
 import { FormProvider, useForm } from "react-hook-form";
 import { createApkSchema, CreateApkSchema } from "@/schema/apk.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { TrueTraceApk } from "@prisma/client";
 
 export const TrueTraceApkForm = () => {
   // single toast id reference to avoid creating multiple toasts during progress
@@ -41,7 +42,7 @@ export const TrueTraceApkForm = () => {
         `Error uploading APK: ${error.response?.data?.error || error.message}`
       );
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       if (progressToastId.current) {
         toast.update(progressToastId.current, {
           render: `Upload Progress: 100%`,
@@ -53,8 +54,23 @@ export const TrueTraceApkForm = () => {
         progressToastId.current = null;
       }
 
+      queryClient.setQueriesData(
+        {
+          queryKey: [TRUE_TRACE_APKS_QUERY_KEY],
+        },
+        (oldData: TrueTraceApk[]) => {
+          return [data, ...oldData];
+        }
+      );
+
       queryClient.invalidateQueries({
         queryKey: [TRUE_TRACE_APKS_QUERY_KEY],
+      });
+
+      methods.reset({
+        apk_name: "",
+        version: "",
+        file_path: [],
       });
 
       toast.success("APK uploaded successfully!");
