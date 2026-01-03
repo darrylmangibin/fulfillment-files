@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { TimeFrame } from "@/lib/metrics-timespan";
+import { useFusionBuildMetrics } from "@/modules/fusion/hooks/use-fusion-metrics";
 import {
   Box,
   Container,
@@ -14,11 +15,10 @@ import {
 } from "@mui/material";
 import { BuildMetricsChart } from "@/components/build-metrics-chart";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import { useTrueTraceBuildMetrics } from "@/modules/true-trace/hooks/use-true-trace-metrics";
 
-export default function TrueTraceApkPage() {
+export default function FusionDashboardBuildMetricPage() {
   const [timeframe, setTimeframe] = useState<TimeFrame>(TimeFrame.MONTHLY);
-  const { data, isLoading } = useTrueTraceBuildMetrics(timeframe);
+  const { data, isLoading } = useFusionBuildMetrics(timeframe);
 
   return (
     <Box
@@ -45,8 +45,7 @@ export default function TrueTraceApkPage() {
                 left: 0,
                 right: 0,
                 height: "3px",
-                background: (theme) =>
-                  `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
+                background: "linear-gradient(90deg, #7c3aed 0%, #ea580c 100%)",
               },
             }}
           >
@@ -59,17 +58,21 @@ export default function TrueTraceApkPage() {
             >
               <Box>
                 <Typography
-                  variant="h3"
-                  fontWeight={800}
+                  variant="h5"
+                  fontWeight={700}
                   mb={1}
                   sx={{
-                    color: "primary.main",
-                    textShadow: "0 0 1px rgba(88, 166, 255, 0.7)",
+                    background:
+                      "linear-gradient(90deg, #7c3aed 0%, #ea580c 100%)",
+                    backgroundClip: "text",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    textShadow: "0 0 1px rgba(124, 58, 237, 0.7)",
                   }}
                 >
-                  True Trace Build Metrics
+                  Fusion Build Metrics
                 </Typography>
-                <Typography variant="body1" color="#8b949e" fontWeight={500}>
+                <Typography variant="body2" color="#8b949e" fontWeight={500}>
                   Track your build performance and usage metrics
                 </Typography>
               </Box>
@@ -83,8 +86,7 @@ export default function TrueTraceApkPage() {
                     fontWeight: 600,
                     border: "1px solid #30363d",
                     "&:hover": {
-                      border: (theme) =>
-                        `1px solid ${theme.palette.primary.main}`,
+                      border: "1px solid #7c3aed",
                       bgcolor: "#161b22",
                     },
                     "& fieldset": {
@@ -97,10 +99,8 @@ export default function TrueTraceApkPage() {
                       borderColor: "transparent",
                     },
                     "&.Mui-focused": {
-                      border: (theme) =>
-                        `1px solid ${theme.palette.primary.main}`,
-                      boxShadow: (theme) =>
-                        `0 0 0 3px ${theme.palette.primary.main}26`,
+                      border: "1px solid #7c3aed",
+                      boxShadow: "0 0 0 3px rgba(124, 58, 237, 0.15)",
                     },
                   },
                 }}
@@ -109,12 +109,12 @@ export default function TrueTraceApkPage() {
                   value={timeframe}
                   onChange={(e) => setTimeframe(e.target.value as TimeFrame)}
                   startAdornment={
-                    <CalendarMonthIcon sx={{ mr: 1, color: "primary.main" }} />
+                    <CalendarMonthIcon sx={{ mr: 1, color: "#7c3aed" }} />
                   }
                   sx={{
                     color: "#c9d1d9",
                     "& .MuiSelect-icon": {
-                      color: "primary.main",
+                      color: "#7c3aed",
                     },
                   }}
                 >

@@ -17,7 +17,7 @@ export class TrueTraceMetricService {
 
   public async getUpdatesMetrics(timeFrame: TimeFrame): Promise<MetricUpdate> {
     const { data } = await axios.get<MetricUpdate>(
-      "/fusion-apks/metrics/updates",
+      "/true-trace-apks/metrics/updates",
       {
         params: { timeFrame },
       }

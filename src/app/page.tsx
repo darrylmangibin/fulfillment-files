@@ -9,8 +9,8 @@ import {
   Avatar,
 } from "@mui/material";
 import {
-  Android as AndroidIcon,
-  TrackChanges as TrackChangesIcon,
+  Build as BuildIcon,
+  SystemUpdate as SystemUpdateIcon,
 } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 
@@ -19,18 +19,32 @@ export default function Home() {
 
   const cards = [
     {
-      title: "Fusion APK",
+      title: "Fusion Build Metrics",
       description: "Upload and manage Fusion APK files",
-      icon: <AndroidIcon sx={{ fontSize: 40 }} />,
-      path: "/fusion-apk",
+      icon: <BuildIcon sx={{ fontSize: 40 }} />,
+      path: "/dashboard/fusion/builds",
       gradient: "linear-gradient(135deg,#7c3aed,#0891b2)",
     },
     {
-      title: "True Trace APK",
+      title: "True Trace Build Metrics",
       description: "Upload and manage True Trace APK files",
-      icon: <TrackChangesIcon sx={{ fontSize: 40 }} />,
-      path: "/true-trace-apk",
+      icon: <BuildIcon sx={{ fontSize: 40 }} />,
+      path: "/dashboard/true-trace/builds",
       gradient: "linear-gradient(135deg,#ec4899,#8b5cf6)",
+    },
+    {
+      title: "Fusion Update Metrics",
+      description: "Track Fusion app updates and deployments",
+      icon: <SystemUpdateIcon sx={{ fontSize: 40 }} />,
+      path: "/dashboard/fusion/updates",
+      gradient: "linear-gradient(135deg,#10b981,#3b82f6)",
+    },
+    {
+      title: "True Trace Update Metrics",
+      description: "Track True Trace app updates and deployments",
+      icon: <SystemUpdateIcon sx={{ fontSize: 40 }} />,
+      path: "/dashboard/true-trace/updates",
+      gradient: "linear-gradient(135deg,#f59e0b,#ef4444)",
     },
   ];
 

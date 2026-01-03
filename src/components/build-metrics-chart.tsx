@@ -161,7 +161,7 @@ export const BuildMetricsChart = ({
                   direction="row"
                   justifyContent="space-between"
                   alignItems="flex-start"
-                  gap={4}
+                  gap={3}
                 >
                   <Box>
                     <Typography
@@ -175,7 +175,7 @@ export const BuildMetricsChart = ({
                       Android Builds
                     </Typography>
                     <Typography
-                      variant="h2"
+                      variant="h3"
                       fontWeight={700}
                       sx={{
                         background:
@@ -190,8 +190,8 @@ export const BuildMetricsChart = ({
                   </Box>
                   <Box
                     sx={{
-                      width: 64,
-                      height: 64,
+                      width: 46,
+                      height: 46,
                       borderRadius: 2,
                       background:
                         "linear-gradient(135deg, #3fb950 0%, #56d364 100%)",
@@ -260,7 +260,7 @@ export const BuildMetricsChart = ({
                       iOS Builds
                     </Typography>
                     <Typography
-                      variant="h2"
+                      variant="h3"
                       fontWeight={700}
                       sx={{
                         background:
@@ -275,8 +275,8 @@ export const BuildMetricsChart = ({
                   </Box>
                   <Box
                     sx={{
-                      width: 64,
-                      height: 64,
+                      width: 46,
+                      height: 46,
                       borderRadius: 2,
                       background:
                         "linear-gradient(135deg, #58a6ff 0%, #79c0ff 100%)",
