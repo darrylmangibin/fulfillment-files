@@ -17,7 +17,7 @@ export class FusionService {
   async createFusionApk(
     body: FusionApkBody,
     onUploadProgress?: (progress: number) => void
-  ) {
+  ): Promise<FusionApk | undefined> {
     const formData = new FormData();
     formData.append("apk_name", body.apk_name);
     formData.append("version", body.version);

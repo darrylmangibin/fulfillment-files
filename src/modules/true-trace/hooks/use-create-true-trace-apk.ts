@@ -8,7 +8,7 @@ export type UseCreateTrueTraceApkVariables = Parameters<
 >[0];
 
 export type MutationOptions = UseMutationOptions<
-  TrueTraceApk,
+  TrueTraceApk | undefined,
   AxiosError<{
     error: string;
   }>,

@@ -17,7 +17,7 @@ export class TrueTraceService {
   async createTrueTraceApk(
     body: TrueTraceApkBody,
     onUploadProgress?: (progress: number) => void
-  ) {
+  ): Promise<TrueTraceApk | undefined> {
     const formData = new FormData();
     formData.append("apk_name", body.apk_name);
     formData.append("version", body.version);

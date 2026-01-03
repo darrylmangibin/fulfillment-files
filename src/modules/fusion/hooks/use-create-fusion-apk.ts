@@ -8,7 +8,7 @@ export type UseCreateFusionApkVariables = Parameters<
 >[0];
 
 export type MutationOptions = UseMutationOptions<
-  FusionApk,
+  FusionApk | undefined,
   AxiosError<{
     error: string;
   }>,
