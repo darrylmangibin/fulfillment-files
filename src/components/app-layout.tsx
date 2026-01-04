@@ -11,7 +11,6 @@ import {
   ListItemText,
   IconButton,
   Typography,
-  Divider,
   Toolbar,
   AppBar,
   Collapse,
@@ -55,19 +54,31 @@ const navItems: NavItem[] = [
     label: "Fusion",
     icon: <AndroidIcon />,
     subItems: [
-      { label: "List APKs", icon: <ListIcon />, path: "/fusion-apk/list" },
-      { label: "Upload APK", icon: <UploadIcon />, path: "/fusion-apk/create" },
+      {
+        label: "List APKs",
+        icon: <ListIcon />,
+        path: "/dashboard/fusion-apk/list",
+      },
+      {
+        label: "Upload APK",
+        icon: <UploadIcon />,
+        path: "/dashboard/fusion-apk/create",
+      },
     ],
   },
   {
     label: "True Trace",
     icon: <TrackChangesIcon />,
     subItems: [
-      { label: "List APKs", icon: <ListIcon />, path: "/true-trace-apk/list" },
+      {
+        label: "List APKs",
+        icon: <ListIcon />,
+        path: "/dashboard/true-trace-apk/list",
+      },
       {
         label: "Upload APK",
         icon: <UploadIcon />,
-        path: "/true-trace-apk/create",
+        path: "/dashboard/true-trace-apk/create",
       },
     ],
   },
