@@ -12,6 +12,7 @@ import { Upload } from "@aws-sdk/lib-storage";
 import { extname } from "path";
 import { v4 as uuidv4 } from "uuid";
 import { UploadResult } from "@/modules/s3/types/s3-storage.type";
+import { on } from "events";
 
 export class S3StorageService {
   private client: S3Client | null = null;
@@ -45,59 +46,80 @@ export class S3StorageService {
     signedUrlTtlSeconds?: number;
     onProgress?: (progress: number) => void;
   }): Promise<UploadResult> {
-    if (!this.client) {
-      throw new Error("S3 client not initialized");
+    try {
+      if (!this.client) {
+        throw new Error("S3 client not initialized");
+      }
+
+      const { file, onProgress } = params;
+      const fileExtension = extname(file.originalname) || "";
+      const key = params.key || `${uuidv4()}${fileExtension}`;
+
+      let etag: string | undefined;
+
+      if (onProgress) {
+        const uploadParams: PutObjectCommandInput = {
+          Bucket: this.bucket,
+          Key: key,
+          Body: file.buffer, // still OK — Upload wraps it as stream
+          ContentType: file.mimetype,
+          Metadata: {
+            file_extension: fileExtension.replace(".", ""),
+          },
+        };
+
+        const upload = new Upload({
+          client: this.client,
+          params: uploadParams,
+        });
+
+        upload.on("httpUploadProgress", (progress) => {
+          if (!progress.total || !onProgress) return;
+          const percent = Math.round(
+            ((progress.loaded ?? 0) / progress.total) * 100
+          );
+          onProgress(percent);
+        });
+
+        const response = await upload.done();
+        etag = typeof response.ETag === "string" ? response.ETag : undefined;
+      } else {
+        const command = new PutObjectCommand({
+          Bucket: this.bucket,
+          Key: key,
+          Body: file.buffer,
+          ContentType: file.mimetype,
+          Metadata: {
+            file_extension: fileExtension.replace(".", ""),
+          },
+        });
+
+        const response = await this.client.send(command);
+        etag = typeof response.ETag === "string" ? response.ETag : undefined;
+      }
+
+      const signedUrlTtlSeconds = params.signedUrlTtlSeconds ?? 900;
+
+      const getCmd = new GetObjectCommand({
+        Bucket: this.bucket,
+        Key: key,
+      });
+
+      const signedUrl = await getSignedUrl(this.client, getCmd, {
+        expiresIn: signedUrlTtlSeconds,
+      });
+
+      return {
+        bucket: this.bucket,
+        key,
+        path: `s3://${this.bucket}/${key}`,
+        publicUrl: this.getPublicUrl(key),
+        signedUrl,
+        etag,
+      };
+    } catch (error) {
+      throw error;
     }
-
-    const { file, onProgress } = params;
-    const fileExtension = extname(file.originalname) || "";
-    const key = params.key || `${uuidv4()}${fileExtension}`;
-
-    const uploadParams: PutObjectCommandInput = {
-      Bucket: this.bucket,
-      Key: key,
-      Body: file.buffer, // still OK — Upload wraps it as stream
-      ContentType: file.mimetype,
-      Metadata: {
-        file_extension: fileExtension.replace(".", ""),
-      },
-    };
-
-    const upload = new Upload({
-      client: this.client,
-      params: uploadParams,
-    });
-
-    upload.on("httpUploadProgress", (progress) => {
-      if (!progress.total || !onProgress) return;
-      const percent = Math.round(
-        ((progress.loaded ?? 0) / progress.total) * 100
-      );
-      onProgress(percent);
-    });
-
-    const response = await upload.done();
-    const etag = typeof response.ETag === "string" ? response.ETag : undefined;
-
-    const signedUrlTtlSeconds = params.signedUrlTtlSeconds ?? 900;
-
-    const getCmd = new GetObjectCommand({
-      Bucket: this.bucket,
-      Key: key,
-    });
-
-    const signedUrl = await getSignedUrl(this.client, getCmd, {
-      expiresIn: signedUrlTtlSeconds,
-    });
-
-    return {
-      bucket: this.bucket,
-      key,
-      path: `s3://${this.bucket}/${key}`,
-      publicUrl: this.getPublicUrl(key),
-      signedUrl,
-      etag,
-    };
   }
 
   public getPublicUrl(key: string): string {

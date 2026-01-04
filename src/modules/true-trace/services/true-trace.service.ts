@@ -23,29 +23,23 @@ export class TrueTraceService {
     formData.append("version", body.version);
     formData.append("file", body.file_path);
 
-    onUploadProgress?.(0);
-
-    const response = await fetch("/api/true-trace-apks", {
-      method: "POST",
-      body: formData,
-    });
-
-    const reader = response.body?.getReader();
-    const decoder = new TextDecoder();
-
-    while (true) {
-      const { done, value } = await reader!.read();
-      if (done) break;
-
-      const chunk = decoder.decode(value);
-      const parsedChunk: ChunkType = JSON.parse(chunk);
-
-      onUploadProgress?.(parsedChunk.progress);
-
-      if (parsedChunk.data) {
-        return parsedChunk.data;
+    const { data } = await axios.post<TrueTraceApk>(
+      "/true-trace-apks",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        onUploadProgress: (progressEvent) => {
+          const progress = Math.round(
+            (progressEvent.loaded * 100) / (progressEvent.total || 1)
+          );
+          onUploadProgress?.(progress);
+        },
       }
-    }
+    );
+
+    return data;
   }
 
   /**

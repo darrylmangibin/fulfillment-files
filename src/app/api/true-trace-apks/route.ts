@@ -38,61 +38,35 @@ export const POST = async (request: NextRequest) => {
       );
     }
 
-    const stream = new ReadableStream({
-      async start(controller) {
-        try {
-          uploadResult = await s3StorageService.uploadBuffer({
-            file: {
-              buffer: Buffer.from(await file.arrayBuffer()),
-              mimetype: file.type,
-              originalname: file.name,
-              size: file.size,
-            } as unknown as Express.Multer.File,
-            onProgress: (progress) => {
-              controller.enqueue(
-                new TextEncoder().encode(
-                  JSON.stringify({ progress, data: null }) + "\n"
-                )
-              );
-            },
-          });
+    uploadResult = await s3StorageService.uploadBuffer({
+      file: {
+        buffer: Buffer.from(await file.arrayBuffer()),
+        mimetype: file.type,
+        originalname: file.name,
+        size: file.size,
+      } as unknown as Express.Multer.File,
+    });
 
-          const trueTraceApk = await prisma.trueTraceApk.create({
-            data: {
-              apk_name: String(apk_name),
-              version: String(version),
-              file_path: uploadResult.publicUrl,
-              size: file.size,
-              key: uploadResult.key,
-            },
-          });
-
-          controller.enqueue(
-            new TextEncoder().encode(
-              JSON.stringify({ progress: 100, data: trueTraceApk }) + "\n"
-            )
-          );
-          controller.close();
-        } catch (error) {
-          if (uploadResult) {
-            console.log("Cleaning up uploaded file due to error...");
-            await s3StorageService.deleteObject({
-              key: uploadResult.key,
-            });
-          }
-
-          controller.error(error);
-        }
+    const trueTraceApk = await prisma.trueTraceApk.create({
+      data: {
+        apk_name: String(apk_name),
+        version: String(version),
+        file_path: uploadResult.publicUrl,
+        size: file.size,
+        key: uploadResult.key,
       },
     });
 
-    return new Response(stream, {
-      headers: { "Content-Type": "text/plain" },
-      status: 201,
-      statusText: "Created",
-    });
+    return NextResponse.json(trueTraceApk);
   } catch (error) {
     console.log("[ERROR]: ", error);
+
+    if (uploadResult) {
+      console.log("Cleaning up uploaded file due to error...");
+      await s3StorageService.deleteObject({
+        key: uploadResult.key,
+      });
+    }
 
     if (error instanceof ZodError) {
       return NextResponse.json(
