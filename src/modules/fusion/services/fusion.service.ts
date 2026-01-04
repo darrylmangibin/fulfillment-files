@@ -23,6 +23,8 @@ export class FusionService {
     formData.append("version", body.version);
     formData.append("file", body.file_path);
 
+    console.log("Uploading file...");
+
     const { data } = await axios.post<FusionApk>("/fusion-apks", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
@@ -31,6 +33,8 @@ export class FusionService {
         const progress = Math.round(
           (progressEvent.loaded * 100) / (progressEvent.total || 1)
         );
+
+        console.log(progress);
         onUploadProgress?.(progress);
       },
     });

@@ -5,7 +5,6 @@ import {
   PutObjectCommand,
   GetObjectCommand,
   DeleteObjectCommand,
-  PutObjectCommandInput,
   HeadObjectCommand,
 } from "@aws-sdk/client-s3";
 import { extname } from "path";
@@ -65,14 +64,12 @@ export class S3StorageService {
       const response = await this.client.send(command);
       const etag =
         typeof response.ETag === "string" ? response.ETag : undefined;
-
       const signedUrlTtlSeconds = params.signedUrlTtlSeconds ?? 900;
 
       const getCmd = new GetObjectCommand({
         Bucket: this.bucket,
         Key: key,
       });
-
       const signedUrl = await getSignedUrl(this.client, getCmd, {
         expiresIn: signedUrlTtlSeconds,
       });

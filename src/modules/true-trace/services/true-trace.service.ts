@@ -23,6 +23,8 @@ export class TrueTraceService {
     formData.append("version", body.version);
     formData.append("file", body.file_path);
 
+    console.log("Uploading file...");
+
     const { data } = await axios.post<TrueTraceApk>(
       "/true-trace-apks",
       formData,
@@ -34,6 +36,8 @@ export class TrueTraceService {
           const progress = Math.round(
             (progressEvent.loaded * 100) / (progressEvent.total || 1)
           );
+
+          console.log(progress);
           onUploadProgress?.(progress);
         },
       }

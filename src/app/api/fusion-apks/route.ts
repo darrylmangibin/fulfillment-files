@@ -38,6 +38,8 @@ export const POST = async (request: NextRequest) => {
       );
     }
 
+    console.log("Uploading file...");
+
     uploadResult = await s3StorageService.uploadBuffer({
       file: {
         buffer: Buffer.from(await file.arrayBuffer()),
@@ -46,6 +48,8 @@ export const POST = async (request: NextRequest) => {
         size: file.size,
       } as unknown as Express.Multer.File,
     });
+
+    console.log(uploadResult);
 
     const fusionApk = await prisma.fusionApk.create({
       data: {
@@ -56,8 +60,6 @@ export const POST = async (request: NextRequest) => {
         key: uploadResult.key,
       },
     });
-
-    console.log(fusionApk);
 
     return NextResponse.json(fusionApk);
   } catch (error) {
