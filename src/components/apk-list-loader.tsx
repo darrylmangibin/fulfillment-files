@@ -16,7 +16,11 @@ import {
   useTheme,
 } from "@mui/material";
 
-export const ApkListLoader = () => {
+export const ApkListLoader = ({
+  theme: themeKey = "primary",
+}: {
+  theme?: "primary" | "secondary";
+}) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -28,7 +32,7 @@ export const ApkListLoader = () => {
             width: { xs: 40, md: 48 },
             height: { xs: 40, md: 48 },
             bgcolor: "transparent",
-            background: "linear-gradient(135deg,#ec4899,#8b5cf6)",
+            background: `linear-gradient(135deg, ${theme.palette[themeKey].dark}, ${theme.palette[themeKey].light})`,
             boxShadow: "0 8px 24px rgba(12,32,64,0.5)",
           }}
         >

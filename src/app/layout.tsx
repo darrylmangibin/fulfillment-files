@@ -9,6 +9,8 @@ import { queryClient } from "@/lib/query-client";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { AppLayout } from "@/components/app-layout";
+import darkScrollbar from "@mui/material/darkScrollbar";
+import { GlobalStyles } from "@mui/material";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,12 +43,42 @@ export default function RootLayout({
         contrastText: "#ffffff",
       },
     },
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: () => ({
+          body: darkScrollbar(),
+        }),
+      },
+    },
   });
 
   return (
     <QueryClientProvider client={queryClient}>
       <StyledEngineProvider injectFirst>
         <ThemeProvider theme={darkTheme}>
+          <GlobalStyles
+            styles={{
+              "*::-webkit-scrollbar": {
+                width: "10px",
+              },
+              "*::-webkit-scrollbar-track": {
+                background: "#1a1a1a", // dark track
+                borderRadius: "6px",
+              },
+              "*::-webkit-scrollbar-thumb": {
+                background: "#333", // dark thumb
+                borderRadius: "6px",
+                boxShadow: "inset 0 0 6px #0ff, 0 0 4px #0ff", // subtle neon glow
+              },
+              "*::-webkit-scrollbar-thumb:hover": {
+                boxShadow: "inset 0 0 8px #0ff, 0 0 6px #0ff", // stronger glow on hover
+              },
+              "*": {
+                scrollbarWidth: "thin", // Firefox
+                scrollbarColor: "#333 #1a1a1a", // thumb color # track color #
+              },
+            }}
+          />
           <html lang="en">
             <body
               className={`${geistSans.variable} ${geistMono.variable} antialiased`}

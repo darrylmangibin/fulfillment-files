@@ -14,8 +14,6 @@ import {
   Chip,
   IconButton,
   Avatar,
-  Skeleton,
-  CircularProgress,
   Stack,
   useMediaQuery,
   useTheme,
@@ -35,6 +33,7 @@ export type ApkListProps = {
   description: string;
   icon?: React.ReactNode;
   onDelete?: (apkId: string) => void;
+  theme?: "primary" | "secondary";
 };
 
 export const ApkList = ({
@@ -44,13 +43,14 @@ export const ApkList = ({
   description,
   icon,
   onDelete,
+  theme: themeKey = "primary",
 }: ApkListProps) => {
   const Icon = icon ?? <TrackChangesIcon />;
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   if (isLoading) {
-    return <ApkListLoader />;
+    return <ApkListLoader theme={themeKey} />;
   }
 
   return (
@@ -61,17 +61,24 @@ export const ApkList = ({
             width: { xs: 40, md: 48 },
             height: { xs: 40, md: 48 },
             bgcolor: "transparent",
-            background: "linear-gradient(135deg,#ec4899,#8b5cf6)",
-            boxShadow: "0 8px 24px rgba(12,32,64,0.5)",
+            background: `linear-gradient(135deg, ${theme.palette[themeKey].dark}, ${theme.palette[themeKey].light}  )`,
+            boxShadow: `0 8px 24px ${theme.palette[themeKey].main}80`,
           }}
         >
           {Icon}
         </Avatar>
         <Box>
-          <Typography variant="h5" sx={{ fontWeight: 700, fontSize: { xs: 18, md: 24 } }}>
+          <Typography
+            variant="h5"
+            sx={{ fontWeight: 700, fontSize: { xs: 18, md: 24 } }}
+          >
             {title}
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: 12, md: 14 } }}>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ fontSize: { xs: 12, md: 14 } }}
+          >
             {description}
           </Typography>
         </Box>
@@ -86,15 +93,19 @@ export const ApkList = ({
               sx={{
                 borderRadius: 2,
                 bgcolor: "#02040a",
-                boxShadow: "0 4px 12px rgba(2,6,23,0.6)",
-                border: "1px solid rgba(255,255,255,0.05)",
+                boxShadow: `0 4px 12px ${theme.palette[themeKey].main}80`,
+                border: `1px solid ${theme.palette[themeKey].main}20`,
               }}
             >
               <CardContent sx={{ p: 2 }}>
                 <Stack spacing={2}>
                   {/* APK Name */}
                   <Box>
-                    <Typography variant="caption" color="text.secondary" sx={{ fontSize: 11 }}>
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      sx={{ fontSize: 11 }}
+                    >
                       APK Name
                     </Typography>
                     <Typography variant="body2" fontWeight={600}>
@@ -105,7 +116,11 @@ export const ApkList = ({
                   {/* Version and Size */}
                   <Stack direction="row" spacing={2} alignItems="center">
                     <Box flex={1}>
-                      <Typography variant="caption" color="text.secondary" sx={{ fontSize: 11 }}>
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        sx={{ fontSize: 11 }}
+                      >
                         Version
                       </Typography>
                       <Box mt={0.5}>
@@ -113,16 +128,21 @@ export const ApkList = ({
                           label={apk.version}
                           size="small"
                           sx={{
-                            bgcolor: "rgba(236,72,153,0.15)",
-                            color: "#ec4899",
+                            bgcolor: theme.palette[themeKey].light + "26",
+                            color: theme.palette[themeKey].main,
                             height: 24,
                             fontSize: 12,
+                            textShadow: `1px 1px 1px ${theme.palette[themeKey].main}80`,
                           }}
                         />
                       </Box>
                     </Box>
                     <Box flex={1}>
-                      <Typography variant="caption" color="text.secondary" sx={{ fontSize: 11 }}>
+                      <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        sx={{ fontSize: 11 }}
+                      >
                         Size
                       </Typography>
                       <Typography variant="body2" mt={0.5}>
@@ -133,7 +153,11 @@ export const ApkList = ({
 
                   {/* Date */}
                   <Box>
-                    <Typography variant="caption" color="text.secondary" sx={{ fontSize: 11 }}>
+                    <Typography
+                      variant="caption"
+                      color="text.secondary"
+                      sx={{ fontSize: 11 }}
+                    >
                       Date
                     </Typography>
                     <Typography variant="body2">
@@ -142,10 +166,15 @@ export const ApkList = ({
                   </Box>
 
                   {/* Actions */}
-                  <Stack direction="row" spacing={1} justifyContent="flex-end" pt={1}>
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    justifyContent="flex-end"
+                    pt={1}
+                  >
                     <IconButton
                       size="small"
-                      sx={{ color: "#8b5cf6" }}
+                      sx={{ color: theme.palette.common.white }}
                       onClick={() => {
                         window.location.href = apk.file_path;
                       }}
@@ -171,7 +200,10 @@ export const ApkList = ({
           sx={{
             borderRadius: 3,
             bgcolor: "#02040a",
-            boxShadow: "0 12px 40px rgba(2,6,23,0.8)",
+            boxShadow: `1px 1px 24px ${theme.palette.grey[900]}`,
+            maxHeight: 680,
+            height: "100%",
+            overflowY: "auto",
           }}
         >
           <CardContent sx={{ p: 0 }}>
@@ -237,7 +269,9 @@ export const ApkList = ({
                     <TableRow
                       key={apk.id}
                       sx={{
-                        "&:hover": { bgcolor: "rgba(255,255,255,0.02)" },
+                        "&:hover": {
+                          bgcolor: theme.palette[themeKey].main + "10",
+                        },
                       }}
                     >
                       {/* APK NAME */}
@@ -251,8 +285,11 @@ export const ApkList = ({
                           label={apk.version}
                           size="small"
                           sx={{
-                            bgcolor: "rgba(236,72,153,0.15)",
-                            color: "#ec4899",
+                            bgcolor: theme.palette[themeKey].light + "26",
+                            color: theme.palette[themeKey].main,
+                            height: 24,
+                            fontSize: 12,
+                            textShadow: `0px 0px 3px ${theme.palette[themeKey].main}`,
                           }}
                         />
                       </TableCell>
@@ -276,7 +313,7 @@ export const ApkList = ({
                         {/* DOWNLOAD */}
                         <IconButton
                           size="small"
-                          sx={{ color: "#8b5cf6" }}
+                          sx={{ color: theme.palette.grey[500] }}
                           onClick={() => {
                             window.location.href = apk.file_path;
                           }}

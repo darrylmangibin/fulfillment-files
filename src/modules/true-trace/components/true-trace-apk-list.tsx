@@ -50,6 +50,7 @@ export const TrueTraceApkList = () => {
         onDelete={(id) => {
           setSelectedApkId(id);
         }}
+        theme="secondary"
       />
       <DeleteApkDialog
         open={Boolean(selectedApkId)}
