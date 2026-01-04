@@ -34,6 +34,12 @@ export default function RootLayout({
         dark: "#5b21b6",
         contrastText: "#ffffff",
       },
+      secondary: {
+        main: "#db2777",
+        light: "#ff5ca1",
+        dark: "#a21e66",
+        contrastText: "#ffffff",
+      },
     },
   });
 

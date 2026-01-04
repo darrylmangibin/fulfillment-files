@@ -9,7 +9,7 @@ import { UploadResult } from "@/modules/s3/types/s3-storage.type";
 export const GET = async () => {
   try {
     const res = await prisma.trueTraceApk.findMany({
-      orderBy: { version: "desc" },
+      orderBy: { created_at: "desc" },
     });
 
     return NextResponse.json(res);
