@@ -100,6 +100,7 @@ export const TrueTraceApkForm = () => {
         onSubmit={createTrueTraceApk}
         isLoading={isPending}
         title="Upload TrueTrace APK"
+        theme="secondary"
       />
     </FormProvider>
   );

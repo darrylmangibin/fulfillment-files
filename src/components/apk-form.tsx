@@ -15,15 +15,22 @@ import {
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useFormContext, Controller } from "react-hook-form";
 import { CreateApkSchema } from "@/schema/apk.schema";
+import { Palette } from "@mui/material/styles";
 
 export type ApkFormProps = {
   onSubmit?: (data: CreateApkSchema) => void;
   defaultValues?: Partial<CreateApkSchema>;
   isLoading?: boolean;
   title: string;
+  theme?: "primary" | "secondary";
 };
 
-export const ApkForm = ({ onSubmit, isLoading, title }: ApkFormProps) => {
+export const ApkForm = ({
+  onSubmit,
+  isLoading,
+  title,
+  theme: themeKey = "primary",
+}: ApkFormProps) => {
   const { setValue, handleSubmit, register, control, watch } =
     useFormContext<CreateApkSchema>();
 
@@ -65,29 +72,34 @@ export const ApkForm = ({ onSubmit, isLoading, title }: ApkFormProps) => {
                 right: 0,
                 height: "4px",
                 background: (theme) =>
-                  `linear-gradient(90deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
+                  `linear-gradient(90deg, ${theme.palette[themeKey].main}, ${theme.palette[themeKey].light})`,
                 borderRadius: "16px 16px 0 0",
               },
             }}
             elevation={0}
           >
             <CardContent sx={{ p: { xs: 2.5, sm: 5 } }}>
-              <Box display="flex" alignItems="center" gap={{ xs: 1.5, sm: 2.5 }} mb={{ xs: 3, sm: 4 }}>
+              <Box
+                display="flex"
+                alignItems="center"
+                gap={{ xs: 1.5, sm: 2.5 }}
+                mb={{ xs: 3, sm: 4 }}
+              >
                 <Avatar
                   sx={{
                     width: { xs: 44, sm: 56 },
                     height: { xs: 44, sm: 56 },
-                    bgcolor: (theme) => `${theme.palette.primary.main}15`,
+                    bgcolor: (theme) => `${theme.palette[themeKey].main}15`,
                     border: (theme) =>
-                      `2px solid ${theme.palette.primary.main}30`,
+                      `2px solid ${theme.palette[themeKey].main}30`,
                     boxShadow: (theme) =>
-                      `0 8px 32px ${theme.palette.primary.main}40`,
+                      `0 8px 32px ${theme.palette[themeKey].main}40`,
                   }}
                 >
                   <CloudUploadIcon
                     sx={{
                       fontSize: { xs: 24, sm: 28 },
-                      color: "primary.main",
+                      color: `${themeKey}.main`,
                     }}
                   />
                 </Avatar>
@@ -98,7 +110,7 @@ export const ApkForm = ({ onSubmit, isLoading, title }: ApkFormProps) => {
                       fontWeight: 700,
                       fontSize: { xs: 18, sm: 24 },
                       background: (theme) =>
-                        `linear-gradient(135deg, ${theme.palette.primary.main}, ${theme.palette.primary.light})`,
+                        `linear-gradient(135deg, ${theme.palette[themeKey].main}, ${theme.palette[themeKey].light})`,
                       backgroundClip: "text",
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
@@ -107,7 +119,11 @@ export const ApkForm = ({ onSubmit, isLoading, title }: ApkFormProps) => {
                   >
                     {title}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: 12, sm: 14 } }}>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ fontSize: { xs: 12, sm: 14 } }}
+                  >
                     Upload and manage your APK files
                   </Typography>
                 </Box>
@@ -129,11 +145,11 @@ export const ApkForm = ({ onSubmit, isLoading, title }: ApkFormProps) => {
                           disabled={isLoading}
                           slotProps={{
                             inputLabel: {
-                              sx: { fontSize: { xs: 14, sm: 16 } }
+                              sx: { fontSize: { xs: 14, sm: 16 } },
                             },
                             input: {
-                              sx: { fontSize: { xs: 14, sm: 16 } }
-                            }
+                              sx: { fontSize: { xs: 14, sm: 16 } },
+                            },
                           }}
                           sx={{
                             "& .MuiOutlinedInput-root": {
@@ -147,13 +163,13 @@ export const ApkForm = ({ onSubmit, isLoading, title }: ApkFormProps) => {
                                 borderColor: "rgba(255,255,255,0.12)",
                               },
                               "&.Mui-focused fieldset": {
-                                borderColor: "primary.main",
+                                borderColor: `${themeKey}.main`,
                                 borderWidth: 2,
                               },
                             },
                             "& .MuiInputLabel-root": {
                               "&.Mui-focused": {
-                                color: "primary.main",
+                                color: `${themeKey}.main`,
                               },
                             },
                           }}
@@ -180,11 +196,11 @@ export const ApkForm = ({ onSubmit, isLoading, title }: ApkFormProps) => {
                           disabled={isLoading}
                           slotProps={{
                             inputLabel: {
-                              sx: { fontSize: { xs: 14, sm: 16 } }
+                              sx: { fontSize: { xs: 14, sm: 16 } },
                             },
                             input: {
-                              sx: { fontSize: { xs: 14, sm: 16 } }
-                            }
+                              sx: { fontSize: { xs: 14, sm: 16 } },
+                            },
                           }}
                           sx={{
                             "& .MuiOutlinedInput-root": {
@@ -198,13 +214,13 @@ export const ApkForm = ({ onSubmit, isLoading, title }: ApkFormProps) => {
                                 borderColor: "rgba(255,255,255,0.12)",
                               },
                               "&.Mui-focused fieldset": {
-                                borderColor: "primary.main",
+                                borderColor: `${themeKey}.main`,
                                 borderWidth: 2,
                               },
                             },
                             "& .MuiInputLabel-root": {
                               "&.Mui-focused": {
-                                color: "primary.main",
+                                color: `${themeKey}.main`,
                               },
                             },
                           }}
@@ -263,7 +279,11 @@ export const ApkForm = ({ onSubmit, isLoading, title }: ApkFormProps) => {
                             <Button
                               variant="outlined"
                               component="label"
-                              startIcon={<CloudUploadIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />}
+                              startIcon={
+                                <CloudUploadIcon
+                                  sx={{ fontSize: { xs: 18, sm: 20 } }}
+                                />
+                              }
                               size="large"
                               disabled={isLoading}
                               sx={{
@@ -349,7 +369,10 @@ export const ApkForm = ({ onSubmit, isLoading, title }: ApkFormProps) => {
                                   <Typography
                                     variant="caption"
                                     color="text.secondary"
-                                    sx={{ opacity: 0.7, fontSize: { xs: 11, sm: 12 } }}
+                                    sx={{
+                                      opacity: 0.7,
+                                      fontSize: { xs: 11, sm: 12 },
+                                    }}
                                   >
                                     Maximum file size: 500MB
                                   </Typography>
@@ -390,13 +413,13 @@ export const ApkForm = ({ onSubmit, isLoading, title }: ApkFormProps) => {
                       fontSize: { xs: "0.95rem", sm: "1.05rem" },
                       fontWeight: 600,
                       textTransform: "none",
-                      bgcolor: "primary.main",
+                      bgcolor: `${themeKey}.main`,
                       boxShadow: (theme) =>
-                        `0 12px 34px ${theme.palette.primary.main}50`,
+                        `0 12px 34px ${theme.palette[themeKey].main}50`,
                       "&:hover": {
-                        bgcolor: "primary.dark",
+                        bgcolor: `${themeKey}.dark`,
                         boxShadow: (theme) =>
-                          `0 16px 40px ${theme.palette.primary.main}60`,
+                          `0 16px 40px ${theme.palette[themeKey].main}60`,
                         transform: "translateY(-1px)",
                       },
                       "&:active": {
