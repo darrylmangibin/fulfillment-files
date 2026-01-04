@@ -9,22 +9,28 @@ import {
   Stack,
   Chip,
   Grid,
+  useTheme,
 } from "@mui/material";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { BarChart } from "@mui/x-charts/BarChart";
 import AndroidIcon from "@mui/icons-material/Android";
 import AppleIcon from "@mui/icons-material/Apple";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import { th } from "zod/v4/locales";
 
 interface BuildMetricsChartProps {
   data: MetricBuild | undefined;
   loading?: boolean;
+  theme?: "primary" | "secondary";
 }
 
 export const BuildMetricsChart = ({
   data,
   loading = false,
+  theme: themeProp = "primary",
 }: BuildMetricsChartProps) => {
+  const theme = useTheme();
+
   if (loading) {
     return (
       <Card
@@ -42,8 +48,8 @@ export const BuildMetricsChart = ({
                 width: 64,
                 height: 64,
                 borderRadius: "50%",
-                border: "4px solid #21262d",
-                borderTopColor: "#58a6ff",
+                border: `4px solid ${theme.palette.divider}`,
+                borderTopColor: theme.palette[themeProp].main,
                 animation: "spin 1s linear infinite",
                 "@keyframes spin": {
                   "0%": { transform: "rotate(0deg)" },
@@ -132,17 +138,16 @@ export const BuildMetricsChart = ({
         <Grid>
           <Card
             sx={{
-              bgcolor: "#0d1117",
-              border: "1px solid #30363d",
+              border: `1px solid ${theme.palette.divider}`,
               borderRadius: 3,
-              boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
+              boxShadow: `0 8px 24px ${theme.palette[themeProp].main}20`,
               position: "relative",
               overflow: "hidden",
               transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
               "&:hover": {
                 transform: "translateY(-6px)",
-                boxShadow: "0 16px 40px rgba(33, 150, 60, 0.25)",
-                border: "1px solid #3fb950",
+                boxShadow: `0 16px 40px ${theme.palette[themeProp].main}40`,
+                border: `1px solid ${theme.palette[themeProp].main}`,
               },
               "&::before": {
                 content: '""',
@@ -151,7 +156,7 @@ export const BuildMetricsChart = ({
                 left: 0,
                 right: 0,
                 height: "3px",
-                background: "linear-gradient(90deg, #3fb950 0%, #56d364 100%)",
+                background: `linear-gradient(90deg, ${theme.palette[themeProp].dark} 0%, ${theme.palette[themeProp].light} 100%)`,
               },
             }}
           >
@@ -166,7 +171,7 @@ export const BuildMetricsChart = ({
                   <Box>
                     <Typography
                       variant="body2"
-                      color="#8b949e"
+                      color={theme.palette.text.secondary}
                       fontWeight={500}
                       mb={1}
                       textTransform="uppercase"
@@ -178,8 +183,7 @@ export const BuildMetricsChart = ({
                       variant="h3"
                       fontWeight={700}
                       sx={{
-                        background:
-                          "linear-gradient(135deg, #3fb950 0%, #56d364 100%)",
+                        background: `linear-gradient(135deg, ${theme.palette[themeProp].dark} 0%, ${theme.palette[themeProp].light} 100%)`,
                         backgroundClip: "text",
                         WebkitBackgroundClip: "text",
                         WebkitTextFillColor: "transparent",
@@ -193,20 +197,26 @@ export const BuildMetricsChart = ({
                       width: 46,
                       height: 46,
                       borderRadius: 2,
-                      background:
-                        "linear-gradient(135deg, #3fb950 0%, #56d364 100%)",
+                      background: `linear-gradient(135deg, ${theme.palette[themeProp].dark} 0%, ${theme.palette[themeProp].light} 100%)`,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      boxShadow: "0 8px 24px rgba(63, 185, 80, 0.3)",
+                      boxShadow: `0 8px 24px ${theme.palette[themeProp].main}30`,
                     }}
                   >
-                    <AndroidIcon sx={{ fontSize: 36, color: "#0d1117" }} />
+                    <AndroidIcon
+                      sx={{ fontSize: 36, color: theme.palette.common.black }}
+                    />
                   </Box>
                 </Stack>
                 <Stack direction="row" alignItems="center" spacing={1}>
-                  <TrendingUpIcon sx={{ fontSize: 20, color: "#3fb950" }} />
-                  <Typography variant="body2" color="#8b949e">
+                  <TrendingUpIcon
+                    sx={{ fontSize: 20, color: theme.palette[themeProp].main }}
+                  />
+                  <Typography
+                    variant="body2"
+                    color={theme.palette.text.secondary}
+                  >
                     Total completed builds
                   </Typography>
                 </Stack>
@@ -218,17 +228,16 @@ export const BuildMetricsChart = ({
         <Grid>
           <Card
             sx={{
-              bgcolor: "#0d1117",
-              border: "1px solid #30363d",
+              border: `1px solid ${theme.palette.divider}`,
               borderRadius: 3,
-              boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
+              boxShadow: `0 8px 24px ${theme.palette.grey[400]}20`,
               position: "relative",
               overflow: "hidden",
               transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
               "&:hover": {
                 transform: "translateY(-6px)",
-                boxShadow: "0 16px 40px rgba(88, 166, 255, 0.25)",
-                border: "1px solid #58a6ff",
+                boxShadow: `0 16px 40px ${theme.palette.grey[400]}40`,
+                border: `1px solid ${theme.palette.grey[300]}`,
               },
               "&::before": {
                 content: '""',
@@ -237,7 +246,7 @@ export const BuildMetricsChart = ({
                 left: 0,
                 right: 0,
                 height: "3px",
-                background: "linear-gradient(90deg, #58a6ff 0%, #79c0ff 100%)",
+                background: `linear-gradient(90deg, ${theme.palette.grey[400]} 0%, ${theme.palette.grey[200]} 100%)`,
               },
             }}
           >
@@ -251,7 +260,7 @@ export const BuildMetricsChart = ({
                   <Box>
                     <Typography
                       variant="body2"
-                      color="#8b949e"
+                      color={theme.palette.text.secondary}
                       fontWeight={500}
                       mb={1}
                       textTransform="uppercase"
@@ -263,8 +272,7 @@ export const BuildMetricsChart = ({
                       variant="h3"
                       fontWeight={700}
                       sx={{
-                        background:
-                          "linear-gradient(135deg, #58a6ff 0%, #79c0ff 100%)",
+                        background: `linear-gradient(135deg, ${theme.palette.grey[400]} 0%, ${theme.palette.grey[200]} 100%)`,
                         backgroundClip: "text",
                         WebkitBackgroundClip: "text",
                         WebkitTextFillColor: "transparent",
@@ -278,20 +286,24 @@ export const BuildMetricsChart = ({
                       width: 46,
                       height: 46,
                       borderRadius: 2,
-                      background:
-                        "linear-gradient(135deg, #58a6ff 0%, #79c0ff 100%)",
+                      background: `linear-gradient(135deg, ${theme.palette.grey[400]} 0%, ${theme.palette.grey[200]} 100%)`,
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      boxShadow: "0 8px 24px rgba(88, 166, 255, 0.3)",
+                      boxShadow: `0 8px 24px ${theme.palette.grey[400]}20`,
                     }}
                   >
                     <AppleIcon sx={{ fontSize: 36, color: "#0d1117" }} />
                   </Box>
                 </Stack>
                 <Stack direction="row" alignItems="center" spacing={1}>
-                  <TrendingUpIcon sx={{ fontSize: 20, color: "#58a6ff" }} />
-                  <Typography variant="body2" color="#8b949e">
+                  <TrendingUpIcon
+                    sx={{ fontSize: 20, color: theme.palette.grey[300] }}
+                  />
+                  <Typography
+                    variant="body2"
+                    color={theme.palette.text.secondary}
+                  >
                     Total completed builds
                   </Typography>
                 </Stack>
@@ -305,13 +317,13 @@ export const BuildMetricsChart = ({
       {timestamps.length > 0 && (
         <Card
           sx={{
-            bgcolor: "#0d1117",
-            border: "1px solid #30363d",
+            bgcolor: theme.palette.background.paper,
+            border: `1px solid ${theme.palette.divider}`,
             borderRadius: 3,
             boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
             transition: "border 0.3s ease",
             "&:hover": {
-              border: "1px solid #58a6ff",
+              border: `1px solid ${theme.palette[themeProp].main}`,
             },
           }}
         >
@@ -327,12 +339,15 @@ export const BuildMetricsChart = ({
                 <Typography
                   variant="h5"
                   fontWeight={700}
-                  color="#c9d1d9"
+                  color={theme.palette.text.primary}
                   mb={0.5}
                 >
                   Build Trends
                 </Typography>
-                <Typography variant="body2" color="#8b949e">
+                <Typography
+                  variant="body2"
+                  color={theme.palette.text.secondary}
+                >
                   Build activity over time
                 </Typography>
               </Box>
@@ -341,9 +356,9 @@ export const BuildMetricsChart = ({
                   label="Medium Android"
                   size="small"
                   sx={{
-                    bgcolor: "#1a2e1f",
-                    color: "#3fb950",
-                    border: "1px solid #2ea043",
+                    bgcolor: theme.palette[themeProp].light + "20",
+                    color: theme.palette[themeProp].light,
+                    border: `1px solid ${theme.palette[themeProp].light}`,
                     fontWeight: 600,
                     fontSize: 12,
                   }}
@@ -352,9 +367,9 @@ export const BuildMetricsChart = ({
                   label="Large Android"
                   size="small"
                   sx={{
-                    bgcolor: "#1a2e1f",
-                    color: "#56d364",
-                    border: "1px solid #46c25b",
+                    bgcolor: theme.palette[themeProp].dark + "20",
+                    color: theme.palette[themeProp].dark,
+                    border: `1px solid ${theme.palette[themeProp].dark}`,
                     fontWeight: 600,
                     fontSize: 12,
                   }}
@@ -363,9 +378,9 @@ export const BuildMetricsChart = ({
                   label="Medium iOS"
                   size="small"
                   sx={{
-                    bgcolor: "#1c2d41",
-                    color: "#58a6ff",
-                    border: "1px solid #388bfd",
+                    bgcolor: theme.palette.grey[200] + "20",
+                    color: theme.palette.grey[200],
+                    border: `1px solid ${theme.palette.grey[200]}`,
                     fontWeight: 600,
                     fontSize: 12,
                   }}
@@ -374,9 +389,9 @@ export const BuildMetricsChart = ({
                   label="Large iOS"
                   size="small"
                   sx={{
-                    bgcolor: "#1c2d41",
-                    color: "#79c0ff",
-                    border: "1px solid #54aeff",
+                    bgcolor: theme.palette.grey[400] + "20",
+                    color: theme.palette.grey[400],
+                    border: `1px solid ${theme.palette.grey[400]}`,
                     fontWeight: 600,
                     fontSize: 12,
                   }}
@@ -400,7 +415,7 @@ export const BuildMetricsChart = ({
                   {
                     data: mediumAndroidData.map((entry) => entry.value),
                     label: "Medium Android",
-                    color: "#3fb950",
+                    color: theme.palette[themeProp].light,
                     curve: "natural",
                     showMark: false,
                     area: true,
@@ -408,7 +423,7 @@ export const BuildMetricsChart = ({
                   {
                     data: largeAndroidData.map((entry) => entry.value),
                     label: "Large Android",
-                    color: "#56d364",
+                    color: theme.palette[themeProp].dark,
                     curve: "natural",
                     showMark: false,
                     area: true,
@@ -416,7 +431,7 @@ export const BuildMetricsChart = ({
                   {
                     data: mediumIosData.map((entry) => entry.value),
                     label: "Medium iOS",
-                    color: "#58a6ff",
+                    color: theme.palette.grey[200],
                     curve: "natural",
                     showMark: false,
                     area: true,
@@ -424,7 +439,7 @@ export const BuildMetricsChart = ({
                   {
                     data: largeIosData.map((entry) => entry.value),
                     label: "Large iOS",
-                    color: "#79c0ff",
+                    color: theme.palette.grey[400],
                     curve: "natural",
                     showMark: false,
                     area: true,
@@ -455,9 +470,6 @@ export const BuildMetricsChart = ({
                     stroke: "#30363d",
                     strokeWidth: 1,
                   },
-                  // "& .MuiChartsAxis-tick": {
-                  //   stroke: "#30363d",
-                  // },
                   "& .MuiChartsGrid-line": {
                     stroke: "#30363d",
                     strokeWidth: 1,
@@ -486,13 +498,13 @@ export const BuildMetricsChart = ({
       {/* Builds by Type */}
       <Card
         sx={{
-          bgcolor: "#0d1117",
-          border: "1px solid #30363d",
+          bgcolor: theme.palette.background.paper,
+          border: `1px solid ${theme.palette.divider}`,
           borderRadius: 3,
-          boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
+          boxShadow: `0 8px 24px ${theme.palette[themeProp].main}20`,
           transition: "border 0.3s ease",
           "&:hover": {
-            border: "1px solid #58a6ff",
+            border: `1px solid ${theme.palette[themeProp].main}`,
           },
         }}
       >
@@ -507,12 +519,12 @@ export const BuildMetricsChart = ({
               <Typography
                 variant="h5"
                 fontWeight={700}
-                color="#c9d1d9"
+                color={theme.palette.text.primary}
                 mb={0.5}
               >
                 Build Distribution
               </Typography>
-              <Typography variant="body2" color="#8b949e">
+              <Typography variant="body2" color={theme.palette.text.secondary}>
                 Total builds by size category
               </Typography>
             </Box>
@@ -529,11 +541,17 @@ export const BuildMetricsChart = ({
                 >
                   <stop
                     offset="0%"
-                    style={{ stopColor: "#58a6ff", stopOpacity: 1 }}
+                    style={{
+                      stopColor: theme.palette[themeProp].light,
+                      stopOpacity: 1,
+                    }}
                   />
                   <stop
                     offset="100%"
-                    style={{ stopColor: "#388bfd", stopOpacity: 0.8 }}
+                    style={{
+                      stopColor: theme.palette[themeProp].dark,
+                      stopOpacity: 0.8,
+                    }}
                   />
                 </linearGradient>
               </defs>
@@ -551,7 +569,7 @@ export const BuildMetricsChart = ({
                 {
                   dataKey: "value",
                   label: "Total Builds",
-                  color: "#58a6ff",
+                  color: theme.palette[themeProp].main,
                 },
               ]}
               margin={{ top: 20, right: 30, bottom: 80, left: 80 }}
@@ -579,10 +597,10 @@ export const BuildMetricsChart = ({
                 },
                 "& .MuiBarElement-root": {
                   rx: 8,
-                  filter: "drop-shadow(0 4px 12px rgba(88, 166, 255, 0.4))",
+                  filter: `drop-shadow(0 4px 12px ${theme.palette[themeProp].main}88)`,
                   transition: "all 0.3s ease",
                   "&:hover": {
-                    filter: "drop-shadow(0 6px 16px rgba(88, 166, 255, 0.6))",
+                    filter: `drop-shadow(0 6px 16px ${theme.palette[themeProp].main}99)`,
                   },
                 },
                 "& .MuiBarElement-root[fill='#58a6ff']": {

@@ -95,10 +95,14 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   sx={{
                     fontSize: 14,
                     fontWeight: 500,
-                    color: "primary.main",
+                    color: "white",
                     display: "flex",
                     alignItems: "center",
                     gap: 0.5,
+                    textShadow: "0 0 5px white",
+                    textDecorationLine: "underline",
+                    textDecorationStyle: "solid",
+                    textDecorationSkip: "edges",
                   }}
                 >
                   {crumb.icon}
@@ -122,8 +126,16 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                   fontWeight: 500,
                   transition: "color 0.2s",
                   "&:hover": {
-                    color: "primary.main",
-                    textDecoration: "underline",
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: "white",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 0.5,
+                    textShadow: "0 0 5px white",
+                    textDecorationLine: "underline",
+                    textDecorationStyle: "solid",
+                    textDecorationSkip: "edges",
                   },
                 }}
               >

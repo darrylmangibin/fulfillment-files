@@ -80,13 +80,37 @@ export default function Home() {
                 alignItems: "center",
                 gap: 0.5,
                 color: "text.secondary",
-                "&:hover": { color: "text.primary" },
+                "&:hover": {
+                  fontSize: 14,
+                  fontWeight: 500,
+                  color: "white",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 0.5,
+                  textShadow: "0 0 5px white",
+                  textDecorationLine: "underline",
+                  textDecorationStyle: "solid",
+                  textDecorationSkip: "edges",
+                },
               }}
             >
               <HomeIcon sx={{ fontSize: 18 }} />
               Home
             </Link>
-            <Typography sx={{ fontSize: 14, color: "primary.main" }}>
+            <Typography
+              sx={{
+                fontSize: 14,
+                fontWeight: 500,
+                color: "white",
+                display: "flex",
+                alignItems: "center",
+                gap: 0.5,
+                textShadow: "0 0 5px white",
+                textDecorationLine: "underline",
+                textDecorationStyle: "solid",
+                textDecorationSkip: "edges",
+              }}
+            >
               Dashboard
             </Typography>
           </Breadcrumbs>
