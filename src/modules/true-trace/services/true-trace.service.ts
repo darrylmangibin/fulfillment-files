@@ -39,6 +39,8 @@ export class TrueTraceService {
       }
     );
 
+    console.log(data);
+
     return data;
   }
 

@@ -57,6 +57,8 @@ export const POST = async (request: NextRequest) => {
       },
     });
 
+    console.log(trueTraceApk);
+
     return NextResponse.json(trueTraceApk);
   } catch (error) {
     console.log("[ERROR]: ", error);

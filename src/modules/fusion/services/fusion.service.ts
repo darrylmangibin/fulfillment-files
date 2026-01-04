@@ -35,6 +35,8 @@ export class FusionService {
       },
     });
 
+    console.log(data);
+
     return data;
   }
 

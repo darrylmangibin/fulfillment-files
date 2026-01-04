@@ -57,6 +57,8 @@ export const POST = async (request: NextRequest) => {
       },
     });
 
+    console.log(fusionApk);
+
     return NextResponse.json(fusionApk);
   } catch (error) {
     console.log("[ERROR]: ", error);
