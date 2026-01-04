@@ -9,6 +9,7 @@ import {
   Stack,
   Grid,
   Divider,
+  useTheme,
 } from "@mui/material";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { BarChart } from "@mui/x-charts/BarChart";
@@ -18,12 +19,16 @@ import StorageIcon from "@mui/icons-material/Storage";
 interface UpdateMetricsChartProps {
   data: MetricUpdate | undefined;
   loading?: boolean;
+  theme?: "primary" | "secondary";
 }
 
 export const UpdateMetricsChart = ({
   data,
   loading = false,
+  theme: themeKey = "primary",
 }: UpdateMetricsChartProps) => {
+  const theme = useTheme();
+
   if (loading) {
     return (
       <Card
@@ -42,7 +47,7 @@ export const UpdateMetricsChart = ({
                 height: 48,
                 borderRadius: "50%",
                 border: "3px solid rgba(255,255,255,0.1)",
-                borderTopColor: (theme) => theme.palette.primary.main,
+                borderTopColor: theme.palette[themeKey].main,
                 animation: "spin 1s linear infinite",
                 "@keyframes spin": {
                   "0%": { transform: "rotate(0deg)" },
@@ -142,7 +147,9 @@ export const UpdateMetricsChart = ({
                     flexShrink: 0,
                   }}
                 >
-                  <StorageIcon sx={{ fontSize: 24, color: "#7c3aed" }} />
+                  <StorageIcon
+                    sx={{ fontSize: 24, color: theme.palette[themeKey].main }}
+                  />
                 </Box>
                 <Box flex={1}>
                   <Typography
@@ -201,7 +208,7 @@ export const UpdateMetricsChart = ({
                     flexShrink: 0,
                   }}
                 >
-                  <PeopleIcon sx={{ fontSize: 24, color: "#ea580c" }} />
+                  <PeopleIcon sx={{ fontSize: 24, color: theme.palette.warning.dark }} />
                 </Box>
                 <Box flex={1}>
                   <Typography
@@ -256,7 +263,7 @@ export const UpdateMetricsChart = ({
                   scaleType: "band",
                   dataKey: "date",
                   tickLabelStyle: {
-                    fill: "#8b949e",
+                    fill: theme.palette[themeKey].contrastText,
                     fontSize: 11,
                   },
                 },
@@ -265,12 +272,12 @@ export const UpdateMetricsChart = ({
                 {
                   dataKey: "bandwidth",
                   label: "Bandwidth (MB)",
-                  color: "#7c3aed",
+                  color: theme.palette[themeKey].dark,
                 },
                 {
                   dataKey: "updaters",
                   label: "Unique Updaters",
-                  color: "#ea580c",
+                  color: theme.palette.warning.dark,
                 },
               ]}
               slotProps={{
@@ -335,14 +342,14 @@ export const UpdateMetricsChart = ({
                 {
                   data: bandwidthData.map((d) => d.value / (1024 * 1024)),
                   label: "Bandwidth (MB)",
-                  color: "#7c3aed",
+                  color: theme.palette[themeKey].dark,
                   showMark: false,
                   curve: "monotoneX",
                 },
                 {
                   data: uniqueUpdatersData.map((d) => d.value),
                   label: "Unique Updaters",
-                  color: "#ea580c",
+                  color: theme.palette.warning.dark,
                   showMark: false,
                   curve: "monotoneX",
                 },
