@@ -58,6 +58,16 @@ export default function RootLayout({
         <ThemeProvider theme={darkTheme}>
           <GlobalStyles
             styles={{
+              html: {
+                colorScheme: "dark !important", // Force dark color scheme
+                backgroundColor: "#121212 !important",
+                color: "#ffffff !important",
+              },
+              body: {
+                colorScheme: "dark !important", // Force dark color scheme
+                backgroundColor: "#121212 !important",
+                color: "#ffffff !important",
+              },
               "*::-webkit-scrollbar": {
                 width: "10px",
               },
@@ -77,11 +87,22 @@ export default function RootLayout({
                 scrollbarWidth: "thin", // Firefox
                 scrollbarColor: "#333 #1a1a1a", // thumb color # track color #
               },
+              "@media (prefers-color-scheme: light)": {
+                html: {
+                  backgroundColor: "#121212 !important",
+                  color: "#ffffff !important",
+                },
+                body: {
+                  backgroundColor: "#121212 !important",
+                  color: "#ffffff !important",
+                },
+              },
             }}
           />
-          <html lang="en">
+          <html lang="en" style={{ colorScheme: "dark" }}>
             <body
               className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+              style={{ colorScheme: "dark" }}
             >
               {children}
             </body>
