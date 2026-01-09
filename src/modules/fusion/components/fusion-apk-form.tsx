@@ -98,7 +98,13 @@ export const FusionApkForm = () => {
   return (
     <FormProvider {...methods}>
       <ApkForm
-        onSubmit={createFusionApk}
+        // onSubmit={createFusionApk}
+        onSubmit={() => {
+          // Temporary disable the uploading
+          toast.warning(
+            "At the moment, only administrators are allowed to upload files."
+          );
+        }}
         isLoading={isPending}
         title="Upload Fusion APK"
       />

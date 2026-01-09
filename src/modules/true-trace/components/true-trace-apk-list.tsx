@@ -47,8 +47,13 @@ export const TrueTraceApkList = () => {
         title="True Trace APK List"
         description="View and manage all True Trace APK files"
         icon={<TrackChanges />}
-        onDelete={(id) => {
-          setSelectedApkId(id);
+        // onDelete={(id) => {
+        //   setSelectedApkId(id);
+        // }}
+        onDelete={() => {
+          toast.warning(
+            "At the moment, only administrators are allowed to remove files."
+          );
         }}
         theme="secondary"
       />

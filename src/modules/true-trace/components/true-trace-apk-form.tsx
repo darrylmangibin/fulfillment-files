@@ -97,7 +97,13 @@ export const TrueTraceApkForm = () => {
   return (
     <FormProvider {...methods}>
       <ApkForm
-        onSubmit={createTrueTraceApk}
+        // onSubmit={createTrueTraceApk}
+        onSubmit={() => {
+          // Temporary disable the uploading
+          toast.warning(
+            "At the moment, only administrators are allowed to upload files."
+          );
+        }}
         isLoading={isPending}
         title="Upload TrueTrace APK"
         theme="secondary"

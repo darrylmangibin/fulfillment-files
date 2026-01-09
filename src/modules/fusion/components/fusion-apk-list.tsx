@@ -48,8 +48,13 @@ export const FusionApkList = () => {
         title="Fusion APK List"
         description="View and manage all Fusion APK files"
         icon={<Android />}
-        onDelete={(id) => {
-          setSelectedApkId(id);
+        // onDelete={(id) => {
+        //   setSelectedApkId(id);
+        // }}
+        onDelete={() => {
+          toast.warning(
+            "At the moment, only administrators are allowed to remove files."
+          );
         }}
       />
       <DeleteApkDialog
